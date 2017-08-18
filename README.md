@@ -1,13 +1,13 @@
 # domained
 Bug Bounty Hunting Recon Script
 
-**Moved from [OrOneEqualsOne/domained](https://github.com/OrOneEqualsOne/domained)- New Name, Same Great Recon!**
+**Moved from [OrOneEqualsOne/reconned](https://github.com/OrOneEqualsOne/reconned)- New Name, Same Great Recon!**
 
 **Gist:** Some ~~terrible~~ continually updated python code leveraging some awesome tools that I use for bug bounty reconnaissance. 
 
 **The tools contained in domained requires Kali Linux (preferred) or Debian 7+** 
 
-domained uses several subdomain enumeration tools and wordlists to create a unique list of subdmains that are passed to EyeWitness for reporting with categorized screenshots, server response headers and signature based default credential checking. *(resources are saved to ./bin and output is saved to ./output)*
+Domained uses several subdomain enumeration tools and wordlists to create a unique list of subdmains that are passed to EyeWitness for reporting with categorized screenshots, server response headers and signature based default credential checking. *(resources are saved to ./bin and output is saved to ./output)*
 
 Initial Install: *python domained.py --install*
 
@@ -69,7 +69,7 @@ Option | Description
 - Please see the Pushover API info [here](https://pushover.net/api) and instructions on how to allow less secure apps on your gmail account [here](https://support.google.com/accounts/answer/6010255)
 
 ##### To-Do List
-- Multiple Domain Names
+- Multiple Domains
 - ~~Notifications~~
 
 ##### Updates
