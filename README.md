@@ -1,15 +1,15 @@
-# Reconned
+# domained
 Bug Bounty Hunting Recon Script
 
-**Moved from [OrOneEqualsOne/reconned](https://github.com/OrOneEqualsOne/reconned)- New Name, Same Great Recon!**
+**Moved from [OrOneEqualsOne/domained](https://github.com/OrOneEqualsOne/domained)- New Name, Same Great Recon!**
 
 **Gist:** Some ~~terrible~~ continually updated python code leveraging some awesome tools that I use for bug bounty reconnaissance. 
 
-**The tools contained in Reconned requires Kali Linux (preferred) or Debian 7+** 
+**The tools contained in domained requires Kali Linux (preferred) or Debian 7+** 
 
-reconned uses several subdomain enumeration tools and wordlists to create a unique list of subdmains that are passed to EyeWitness for reporting with categorized screenshots, server response headers and signature based default credential checking. *(resources are saved to ./bin and output is saved to ./output)*
+domained uses several subdomain enumeration tools and wordlists to create a unique list of subdmains that are passed to EyeWitness for reporting with categorized screenshots, server response headers and signature based default credential checking. *(resources are saved to ./bin and output is saved to ./output)*
 
-Initial Install: *python reconned.py --install*
+Initial Install: *python domained.py --install*
 
 **_NOTE: This is an active recon – only perform on applications that you have permission to test against._**
 
@@ -31,21 +31,21 @@ Initial Install: *python reconned.py --install*
 ````
 First Step:
 Install Required Python Modules: sudo pip install -r ./ext/requirements.txt
-Install Tools: python reconned.py --install
+Install Tools: python domained.py --install
 
-Example 1: python reconned.py -d example.com
+Example 1: python domained.py -d example.com
 Uses subdomain example.com (Sublist3r enumall, Knock)
 
-Example 2: python reconned.py -d example.com -b -p --vpn
+Example 2: python domained.py -d example.com -b -p --vpn
 Uses subdomain example.com with seclist subdomain list bruteforcing (massdns, subbrute, Sublist3r and enumall), adds ports 8443/8080 and checks if on VPN
 
-Example 3: python reconned.py -d example.com -b --bruteall
+Example 3: python domained.py -d example.com -b --bruteall
 Uses subdomain example.com with large-all.txt bruteforcing (massdns, subbrute, Sublist3r and enumall)
 
-Example 4: python reconned.py -d example.com --quick
+Example 4: python domained.py -d example.com --quick
 Uses subdomain example.com and only Sublist3r (+subbrute)
 
-Example 5: python reconned.py -d example.com --quick --notify
+Example 5: python domained.py -d example.com --quick --notify
 Uses subdomain example.com, only Sublist3r (+subbrute) and notification
 
 Note: --bruteall must be used with the -b flag
