@@ -76,3 +76,4 @@ Option | Description
 - 07-15-2017: Updated to include error handling and updated reconnaissance  techniques from Bugcrowd's [LevelUp](https://pages.bugcrowd.com/level-up-virtual-hacking-conference) Conference (including subbrute/masscan and subdomain lists) - influenced by Jason Haddix's talk [Bug Hunter's Methodology 2.0](https://t.co/Umhj4NUtJ5)
 - 08-09-2017: Various fixes (+ phantomjs error), added --fresh option, removed redundant PyBrute folder from output and added pip requirements.txt
 - 08-15-2017: Added notification (--notify) option with Pushover or Gmail support
+- 08-18-2017: Moved repo from [https://github.com/OrOneEqualsOne/reconned](https://github.com/OrOneEqualsOne/reconned)
