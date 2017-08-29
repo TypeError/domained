@@ -13,25 +13,25 @@ def get_args():
     parser.add_argument(
         '-d', '--domain', type=str, help='Domain', required=False, default=False)
     parser.add_argument(
-        '-s', '--secure', help='Secure', nargs='?', required=False, default=False)
+        '-s', '--secure', help='Secure', action='store_true', required=False, default=False)
     parser.add_argument(
-        '-b', '--bruteforce', help='Bruceforce', nargs='?', default=False)
+        '-b', '--bruteforce', help='Bruceforce', action='store_true', default=False)
     parser.add_argument(
-        '--upgrade', help='Upgrade', nargs='?', default=False)
+        '--upgrade', help='Upgrade', action='store_true', default=False)
     parser.add_argument(
-        '--install', help='Install', nargs='?', default=False)
+        '--install', help='Install', action='store_true', default=False)
     parser.add_argument(
-        '--vpn', help='VPN Check', nargs='?', default=False)
+        '--vpn', help='VPN Check', action='store_true', default=False)
     parser.add_argument(
-        '-p', '--ports', help='Ports', nargs='?', default=False)
+        '-p', '--ports', help='Ports', action='store_true', default=False)
     parser.add_argument(
-        '-q', '--quick', help='Quick', nargs='?', default=False)
+        '-q', '--quick', help='Quick', action='store_true', default=False)
     parser.add_argument(
-        '--bruteall', help='Bruteforce JHaddix All', nargs='?', default=False)
+        '--bruteall', help='Bruteforce JHaddix All', action='store_true', default=False)
     parser.add_argument(
-        '--fresh', help='Remove output Folder', nargs='?', default=False)
+        '--fresh', help='Remove output Folder', action='store_true', default=False)
     parser.add_argument(
-        '--notify', help='Notify when script completed', nargs='?', default=False)
+        '--notify', help='Notify when script completed', action='store_true', default=False)
 
     return parser.parse_args()
 
@@ -58,9 +58,9 @@ def banner():
     if (next(glob.iglob(globpath), None)) or (next(glob.iglob(globpath2), None)):
         print("\nThe following files may be left over from failed domained attempts:")
         for file in glob.glob(globpath):
-            print("  - " + file)
+            print("  - {}".format(file))
         for file in glob.glob(globpath2):
-            print("  - " + file)
+            print("  - {}".format(file))
         signal(SIGALRM, lambda x: 1 / 0)
         try:
             alarm(5)
@@ -77,21 +77,13 @@ def banner():
             print("\n\nStarting domained...")
 
 
-def sublist3r():
+def sublist3r(brute=False):
     print("\n\n\033[1;31mRunning Sublist3r \n\033[1;37m")
-    sublist3rFileName = ("output/" + domain + "_sublist3r.txt")
-    Subcmd = (("python bin/Sublist3r/sublist3r.py -v -t 15 -d %s -o " + sublist3rFileName) % (domain))
-    print("\n\033[1;31mRunning Command: \033[1;37m" + Subcmd)
-    os.system(Subcmd)
-    print("\n\033[1;31mSublist3r Complete\033[1;37m")
-    time.sleep(1)
-
-
-def sublist3rBrute():
-    print("\n\n\033[1;31mRunning Sublist3r \n\033[1;37m")
-    sublist3rFileName = ("output/" + domain + "_sublist3r.txt")
-    Subcmd = (("python bin/Sublist3r/sublist3r.py -v -b -t 15 -d %s -o " + sublist3rFileName) % (domain))
-    print("\n\033[1;31mRunning Command: \033[1;37m" + Subcmd)
+    sublist3rFileName = "{}_sublist3r.txt".format(output_base)
+    Subcmd = "python {} -v -t 15 {} -d {} -o {}".format(
+        os.path.join(script_path, 'bin/Sublist3r/sublist3r.py'),
+        '-b' if brute else '', domain, sublist3rFileName)
+    print("\n\033[1;31mRunning Command: \033[1;37m{}".format(Subcmd))
     os.system(Subcmd)
     print("\n\033[1;31mSublist3r Complete\033[1;37m")
     time.sleep(1)
@@ -100,8 +92,9 @@ def sublist3rBrute():
 
 def enumall():
     print("\n\n\033[1;31mRunning Enumall \n\033[1;37m")
-    enumallCMD = "python bin/domain/enumall.py %s" % (domain)
-    print("\n\033[1;31mRunning Command: \033[1;37m" + enumallCMD)
+    enumallCMD = "python {} {}".format(
+    os.path.join(script_path, 'bin/domain/enumall.py'), domain)
+    print("\n\033[1;31mRunning Command: \033[1;37m{}".format(enumallCMD))
     os.system(enumallCMD)
     print("\n\033[1;31menumall Complete\033[1;37m")
     time.sleep(1)
@@ -109,29 +102,25 @@ def enumall():
 
 def massdns():
     print("\n\n\033[1;31mRunning massdns \n\033[1;37m")
-    if bruteall is not False:
-        massdnsCMD = (
-            "./bin/subbrute/subbrute.py -s ./bin/sublst/all.txt " + domain + " | ./bin/massdns/bin/massdns -r resolvers.txt -t A -a -o -w ./output/" + domain + "-massdns.txt -")
-        print("\n\033[1;31mRunning Command: \033[1;37m" + massdnsCMD)
-        os.system(massdnsCMD)
-        print("\n\033[1;31mMasscan Complete\033[1;37m")
-    else:
-        massdnsCMD = (
-            "./bin/subbrute/subbrute.py -s ./bin/sublst/sl-domains.txt " + domain + " | ./bin/massdns/bin/massdns -r resolvers.txt -t A -a -o -w ./output/" + domain + "-massdns.txt -")
-        print("\n\033[1;31mRunning Command: \033[1;37m" + massdnsCMD)
-        os.system(massdnsCMD)
-        print("\n\033[1;31mMasscan Complete\033[1;37m")
+    word_file = os.path.join(script_path, 'bin/sublst/all.txt' if bruteall else 'bin/sublst/sl-domains.txt')
+    massdnsCMD = '{} -s {} | {} -r resolvers.txt -t A -a -o -w {}-massdns.txt -'.format(
+        os.path.join(script_path, 'bin/subbrute/subbrute.py'), word_file,
+        os.path.join(script_path, 'bin/massdns/bin/massdns'), output_base)
+    print("\n\033[1;31mRunning Command: \033[1;37m{}".format(massdnsCMD))
+    os.system(massdnsCMD)
+    print("\n\033[1;31mMasscan Complete\033[1;37m")
     time.sleep(1)
 
 
 def knockpy():
     print("\n\n\033[1;31mRunning Knock \n\033[1;37m")
-    knockpyCmd = ("python bin/knockpy/knockpy/knockpy.py -c " + domain)
-    print("\n\033[1;31mRunning Command: \033[1;37m" + knockpyCmd)
+    knockpyCmd = "python {} -c {}".format(
+        os.path.join(script_path, 'bin/knockpy/knockpy/knockpy.py'), domain)
+    print("\n\033[1;31mRunning Command: \033[1;37m {}".format(knockpyCmd))
     os.system(knockpyCmd)
     rootdomainStrip = domain.replace(".", "_")
-    knockpyFilenameInit = ("output/" + domain + "_knock.csv")
-    os.system("mv " + rootdomainStrip + "* " + knockpyFilenameInit)
+    knockpyFilenameInit = "{}_knock.csv".format(output_base)
+    os.system("mv {}* {}".format(rootdomainStrip, knockpyFilenameInit))
     time.sleep(1)
     knockpySubs = []
     try:
@@ -139,7 +128,7 @@ def knockpy():
             reader = csv.reader(f, delimiter=',')
             for row in reader:
                 knockpySubs.append(row[3])
-        filenameKnocktxt = (knockpyFilenameInit + ".txt")
+        filenameKnocktxt = "{}.txt".format(knockpyFilenameInit)
         f1 = open(filenameKnocktxt, "w")
         for hosts in knockpySubs:
             hosts = "".join(hosts)
@@ -153,25 +142,28 @@ def knockpy():
 def eyewitness(filename):
     print("\n\n\033[1;31mRunning EyeWitness  \n\033[1;37m")
     rootdomain = domain
-    EWHTTPScriptIPS = (
-        "python bin/EyeWitness/EyeWitness.py -f " + filename + " --active-scan --no-prompt --headless  -d " + "output/" + rootdomain + "-" + time.strftime(
-            '%m-%d-%y-%H-%M') + "-EW ")
-    if vpn is not False:
-        print(
-            "\n\033[1;31mIf not connected to VPN manually run the following command on reconnect:\n\033[1;37m" + EWHTTPScriptIPS)
+    EWHTTPScriptIPS = "python {} -f {} --active-scan --no-prompt --headless  -d {}-{}-EW".format(
+        os.path.join(script_path, 'bin/EyeWitness/EyeWitness.py'), filename,
+        output_base, time.strftime('%m-%d-%y-%H-%M'))
+    if vpn is True:
+        print("\n\033[1;31mIf not connected to VPN manually run the following command on reconnect:\n\033[1;37m{}".format(EWHTTPScriptIPS))
         vpncheck()
-    print("\n\033[1;31mRunning Command: \033[1;37m" + EWHTTPScriptIPS)
+    print("\n\033[1;31mRunning Command: \033[1;37m{}".format(EWHTTPScriptIPS))
     os.system(EWHTTPScriptIPS)
     print("\a")
 
 
 def upgradeFiles():
-    binpath = r'bin'
+    binpath = os.path.join(script_path, 'bin')
+    old_wd = os.getcwd()
     if not os.path.exists(binpath):
         os.makedirs(binpath)
     else:
-        os.system("rm -r bin")
+        print("Removing old bin directory: {}".format(binpath))
+        os.system('rm -rf {}'.format(binpath))
         os.makedirs(binpath)
+    print('Changing into domained home: {}'.format(script_path))
+    os.chdir(script_path)
     sublist3rUpgrade = ("git clone https://github.com/aboul3la/Sublist3r.git ./bin/Sublist3r")
     print("\n\033[1;31mInstalling Sublist3r \033[1;37m")
     os.system(sublist3rUpgrade)
@@ -235,14 +227,15 @@ def upgradeFiles():
     print("\nMassdns Installed\n")
     os.system("cp ./bin/subbrute/resolvers.txt ./")
     print("\n\033[1;31mAll tools installed \033[1;37m")
-
+    print('Changing back to old working directory: {}'.format(old_wd))
+    os.chdir(old_wd)
 
 def subdomainfile():
-    sublist3rFileName = ("output/" + domain + "_sublist3r.txt")
-    enumallFileName = (domain + ".lst")
-    subdomainAllFile = ("output/" + domain + "-all.txt")
-    knockpyFileName = ("output/" + domain + "_knock.csv.txt")
-    massdnsFileName = ("output/" + domain + "-massdns.txt")
+    sublist3rFileName = "{}_sublist3r.txt".format(output_base)
+    enumallFileName = "{}.lst".format(domain)
+    subdomainAllFile = "{}-all.txt".format(output_base)
+    knockpyFileName = "{}_knock.csv.txt".format(output_base)
+    massdnsFileName = "{}-massdns.txt".format(output_base)
     f1 = open(subdomainAllFile, "w")
     f1.close()
     print("\nOpening Sublist3r File\n")
@@ -260,7 +253,7 @@ def subdomainfile():
             subdomainCounter = subdomainCounter + 1
         f1.close()
         os.remove(sublist3rFileName)
-        print("\n" + str(subdomainCounter) + " Subdomains discovered by Sublist3r")
+        print("\n{} Subdomains discovered by Sublist3r".format(subdomainCounter))
     except:
         print("\nError Opening Sublist3r File!\n")
     print("\nOpening Enumall File\n")
@@ -280,7 +273,7 @@ def subdomainfile():
         os.remove(enumallFileName)
         enumallFileNamecsv = (domain + ".csv")
         os.remove(enumallFileNamecsv)
-        print("\n" + str(subdomainCounter) + " Subdomains discovered by Enumall")
+        print("\n{} Subdomains discovered by Enumall".format(subdomainCounter))
     except:
         print("\nError Opening Enumall File!\n")
     print("\nOpening Knock File\n")
@@ -294,13 +287,13 @@ def subdomainfile():
         f1.writelines("\n\nknock")
         for hosts in SubHosts:
             hosts = "".join(hosts)
-            f1.writelines("\n" + hosts)
+            f1.writelines("\n{}".format(hosts))
             subdomainCounter = subdomainCounter + 1
         f1.close()
-        knockpyFileNamecsv = ("output/" + domain + "_knock.csv")
+        knockpyFileNamecsv = "{}_knock.csv".format(output_base)
         os.remove(knockpyFileName)
         os.remove(knockpyFileNamecsv)
-        print("\n" + str(subdomainCounter) + " Subdomains discovered by Knock")
+        print("\n{} Subdomains discovered by Knock".format(subdomainCounter))
     except:
         print("\nError Opening Knock File!\n")
     print("\nOpening massdns File\n")
@@ -320,32 +313,32 @@ def subdomainfile():
                 subdomainCounter = subdomainCounter + 1
         f1.close()
         os.remove(massdnsFileName)
-        print("\n" + str(subdomainCounter) + " Subdomains discovered by massdns")
+        print("\n{} Subdomains discovered by massdns".format(subdomainCounter))
     except:
         print("\nError Opening massdns File!\n")
     print("\nCombining Domains Lists\n")
     domainList = open(subdomainAllFile, 'r')
     uniqueDomains = set(domainList)
     domainList.close()
-    subdomainUniqueFile = ("output/" + domain + "-unique.txt")
+    subdomainUniqueFile = "{}-unique.txt".format(output_base)
     uniqueDomainsOut = open(subdomainUniqueFile, 'w')
     for domains in uniqueDomains:
         domains = domains.replace('\n', '')
         if domains.endswith(domain):
-            uniqueDomainsOut.writelines("https://%s" % domains + "\n")
+            uniqueDomainsOut.writelines("https://{}\n".format(domains))
             if ports is not False:
-                uniqueDomainsOut.writelines("https://%s" % domains + ":8443" + "\n")
+                uniqueDomainsOut.writelines("https://{}:8443\n".format(domains))
             if secure is False:
-                uniqueDomainsOut.writelines("http://%s" % domains + "\n")
+                uniqueDomainsOut.writelines("http://{}\n".format(domains))
                 if ports is not False:
-                    uniqueDomainsOut.writelines("http://%s" % domains + ":8080" + "\n")
+                    uniqueDomainsOut.writelines("http://{}:8080\n".format(domains))
     uniqueDomainsOut.close()
     time.sleep(2)
     rootdomainStrip = domain.replace(".", "_")
     print("\nCleaning Up Old Files\n")
     try:
-        os.system("rm " + domain + "*")
-        os.system("rm " + rootdomainStrip + "*")
+        os.system("rm {}*".format(domain))
+        os.system("rm {}*".format(rootdomainStrip))
     except:
         print("\nError Removing Files!\n")
     eyewitness(subdomainUniqueFile)
@@ -356,19 +349,19 @@ def vpncheck():
     # Change "Comcast" to your provider or City")
     if "Comcast" in vpnck.content:
         print("\n\033[1;31mNot connected via VPN \033[1;37m")
-        print("\n" + vpnck.content)
+        print("\n{}".format(vpnck.content))
         print("\n\033[1;31mQuitting domained... \033[1;37m")
         quit()
     else:
         print("\n\033[1;31mConnected via VPN \033[1;37m")
-        print("\n" + vpnck.content)
+        print("\n{}".format(vpnck.content))
         time.sleep(5)
 
 def notified():
     notifySub = ("domained Script Finished")
-    notifyMsg = ("domained Script Finished for " + domain)
+    notifyMsg = "domained Script Finished for {}".format(domain)
     Config = ConfigParser.ConfigParser()
-    Config.read("./ext/notifycfg.ini")
+    Config.read(os.path.join(script_path, "ext/notifycfg.ini"))
     if (Config.get('Pushover', 'enable')) == "True":
         poToken = (Config.get('Pushover', 'token'))
         poUser = (Config.get('Pushover', 'user'))
@@ -411,6 +404,8 @@ if __name__ == "__main__":
     banner()
     args = get_args()
     domain = args.domain
+    output_base = "output/{}".format(domain)
+    script_path = os.path.dirname(os.path.realpath(__file__))
     secure = args.secure
     bruteforce = args.bruteforce
     upgrade = args.upgrade
@@ -421,21 +416,21 @@ if __name__ == "__main__":
     bruteall = args.bruteall
     fresh = args.fresh
     notify = args.notify
-    if vpn is not False:
+    if vpn:
         vpncheck()
-    if fresh is not False:
+    if fresh:
         os.system("rm -r output")
         newpath = r'output'
         os.makedirs(newpath)
-    if install is not False:
+    if install:
         upgradeFiles()
-    elif upgrade is not False:
+    elif upgrade:
         upgradeFiles()
     else:
-        if domain is not False:
-            if quick is not False:
-                sublist3rBrute()
-            elif bruteforce is not False:
+        if domain:
+            if quick:
+                sublist3r(True)
+            elif bruteforce:
                 massdns()
                 sublist3r()
                 enumall()
@@ -445,7 +440,7 @@ if __name__ == "__main__":
                 enumall()
                 knockpy()
                 subdomainfile()
-        if notify is not False:
+        if notify:
             notified()
         else:
             print("\nPlease provide a domain. Ex. -d example.com")

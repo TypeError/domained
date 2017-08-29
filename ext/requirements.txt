@@ -2,4 +2,5 @@ argparse
 requests
 datetime
 ConfigParser
-smtplib
+secure-smtplib
+netaddr
