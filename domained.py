@@ -87,7 +87,8 @@ def sublist3r(brute=False):
     os.system(Subcmd)
     print("\n\033[1;31mSublist3r Complete\033[1;37m")
     time.sleep(1)
-    eyewitness(sublist3rFileName)
+    if brute:
+        eyewitness(sublist3rFileName)
 
 
 def enumall():
