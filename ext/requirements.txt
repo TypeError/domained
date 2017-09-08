@@ -2,4 +2,3 @@ argparse
 requests
 datetime
 ConfigParser
-smtplib
