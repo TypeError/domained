@@ -1,5 +1,5 @@
 # domained
-Bug Bounty Hunting Recon Script
+Domain Name Enumeration Tool
 
 **Moved from [OrOneEqualsOne/reconned](https://github.com/OrOneEqualsOne/reconned)- New Name, Same Great Recon!**
 
