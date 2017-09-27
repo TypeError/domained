@@ -59,6 +59,7 @@ Option | Description
 --bruteall  |   Bruteforce with JHaddix All.txt List instead of SecList
 --fresh  |   Delete old data from output folder
 --notify  |   Send Pushover or Gmail Notifications
+--active  |   EyeWitness Active Scan
 -d  |   The domain you want to preform recon on
 -b  |   Bruteforce with subbrute/massdns and SecList wordlist
 -s n    |   Only HTTPs domains

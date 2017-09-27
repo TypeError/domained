@@ -32,6 +32,8 @@ def get_args():
         '--fresh', help='Remove output Folder', nargs='?', default=False)
     parser.add_argument(
         '--notify', help='Notify when script completed', nargs='?', default=False)
+    parser.add_argument(
+        '--active', help='EyeWitness Active Scan', nargs='?', default=False)
 
     return parser.parse_args()
 
@@ -153,9 +155,14 @@ def knockpy():
 def eyewitness(filename):
     print("\n\n\033[1;31mRunning EyeWitness  \n\033[1;37m")
     rootdomain = domain
-    EWHTTPScriptIPS = (
-        "python bin/EyeWitness/EyeWitness.py -f " + filename + " --active-scan --no-prompt --headless  -d " + "output/" + rootdomain + "-" + time.strftime(
-            '%m-%d-%y-%H-%M') + "-EW ")
+    if active is not False:
+        EWHTTPScriptIPS = (
+            "python bin/EyeWitness/EyeWitness.py -f " + filename + " --active-scan --no-prompt --headless  -d " + "output/" + rootdomain + "-" + time.strftime(
+                '%m-%d-%y-%H-%M') + "-EW ")
+    else:
+        EWHTTPScriptIPS = (
+            "python bin/EyeWitness/EyeWitness.py -f " + filename + " --no-prompt --headless  -d " + "output/" + rootdomain + "-" + time.strftime(
+                '%m-%d-%y-%H-%M') + "-EW ")
     if vpn is not False:
         print(
             "\n\033[1;31mIf not connected to VPN manually run the following command on reconnect:\n\033[1;37m" + EWHTTPScriptIPS)
@@ -364,6 +371,7 @@ def vpncheck():
         print("\n" + vpnck.content)
         time.sleep(5)
 
+
 def notified():
     notifySub = ("domained Script Finished")
     notifyMsg = ("domained Script Finished for " + domain)
@@ -407,6 +415,7 @@ def notified():
         except:
             print("\nError - Email Notification Not Sent\n")
 
+
 if __name__ == "__main__":
     banner()
     args = get_args()
@@ -421,6 +430,7 @@ if __name__ == "__main__":
     bruteall = args.bruteall
     fresh = args.fresh
     notify = args.notify
+    active = args.active
     if vpn is not False:
         vpncheck()
     if fresh is not False:
