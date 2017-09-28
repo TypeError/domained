@@ -66,7 +66,7 @@ def banner():
         signal(SIGALRM, lambda x: 1 / 0)
         try:
             alarm(5)
-            RemoveQ = raw_input("\nWould you like to remove the files? [y/n]: ")
+            RemoveQ = input("\nWould you like to remove the files? [y/n]: ")
             if RemoveQ.lower() == "y":
                 os.system("rm *.csv")
                 os.system("rm *.lst")
@@ -74,7 +74,7 @@ def banner():
                 time.sleep(5)
             else:
                 print("\nThank you.\nPlease wait...")
-                time.sleep(5)
+                time.sleep(1)
         except:
             print("\n\nStarting domained...")
 
@@ -179,6 +179,10 @@ def upgradeFiles():
     else:
         os.system("rm -r bin")
         os.makedirs(binpath)
+    unameChk = subprocess.check_output(['uname', '-am'])
+    if "kali" not in unameChk:
+        print("\n\033[1;31mKali Linux Recommended!\033[1;37m")
+        time.sleep(1)
     sublist3rUpgrade = ("git clone https://github.com/aboul3la/Sublist3r.git ./bin/Sublist3r")
     print("\n\033[1;31mInstalling Sublist3r \033[1;37m")
     os.system(sublist3rUpgrade)
@@ -193,7 +197,6 @@ def upgradeFiles():
     os.system(eyeInstallReq)
     if os.path.isfile("phantomjs") == False:
         print("\nNo phantomjs File Found")
-        unameChk = subprocess.check_output(['uname', '-m'])
         if "x86_64" in unameChk:
             print("\nDownloading 64-Bit phantomjs")
             os.system("wget -O phantomjs https://www.christophertruncer.com/InstallMe/kali2phantomjs")
@@ -241,6 +244,13 @@ def upgradeFiles():
     os.system(massdnsMake)
     print("\nMassdns Installed\n")
     os.system("cp ./bin/subbrute/resolvers.txt ./")
+    if "kali" in unameChk:
+        reconNGInstall = ("apt-get install recon-ng")
+        print("\n\033[1;31mInstalling Recon-ng \033[1;37m")
+        os.system(reconNGInstall)
+        print("\nRecon-ng Installed\n")
+    else:
+        print("Please install Recon-ng - https://bitbucket.org/LaNMaSteR53/")
     print("\n\033[1;31mAll tools installed \033[1;37m")
 
 

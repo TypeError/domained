@@ -1,11 +1,9 @@
 # domained
 Domain Name Enumeration Tool
 
-**Moved from [OrOneEqualsOne/reconned](https://github.com/OrOneEqualsOne/reconned)- New Name, Same Great Recon!**
-
 **Gist:** Some ~~terrible~~ continually updated python code leveraging some awesome tools that I use for bug bounty reconnaissance. 
 
-**The tools contained in domained requires Kali Linux (preferred) or Debian 7+** 
+**The tools contained in domained requires Kali Linux (preferred) or Debian 7+ and Recon-ng** 
 
 Domained uses several subdomain enumeration tools and wordlists to create a unique list of subdmains that are passed to EyeWitness for reporting with categorized screenshots, server response headers and signature based default credential checking. *(resources are saved to ./bin and output is saved to ./output)*
 
@@ -20,7 +18,8 @@ Initial Install: *python domained.py --install*
 2. [enumall](https://github.com/jhaddix/domain) by Jason Haddix 
 3. [Knock](https://github.com/guelfoweb/knock) by Gianni Amato 
 4. [Subbrute](https://github.com/TheRook/subbrute) by TheRook 
-5. [massdns](https://github.com/blechschmidt/massdns) by B. Blechschmidt 
+5. [massdns](https://github.com/blechschmidt/massdns) by B. Blechschmidt
+6. [Recon-ng](https://bitbucket.org/LaNMaSteR53/recon-ng) by Tim Tomes (LaNMaSteR53)
 
 ###### Reporting + Wordlists:
 - [EyeWitness](https://github.com/ChrisTruncer/EyeWitness) by ChrisTruncer  
@@ -70,11 +69,12 @@ Option | Description
 - Please see the Pushover API info [here](https://pushover.net/api) and instructions on how to allow less secure apps on your gmail account [here](https://support.google.com/accounts/answer/6010255)
 
 ##### To-Do List
-- Multiple Domains
-- ~~Notifications~~
+- [ ] Multiple Domains
+- [x] ~~Notifications~~
 
 ##### Updates
 - 07-15-2017: Updated to include error handling and updated reconnaissance  techniques from Bugcrowd's [LevelUp](https://pages.bugcrowd.com/level-up-virtual-hacking-conference) Conference (including subbrute/masscan and subdomain lists) - influenced by Jason Haddix's talk [Bug Hunter's Methodology 2.0](https://t.co/Umhj4NUtJ5)
 - 08-09-2017: Various fixes (+ phantomjs error), added --fresh option, removed redundant PyBrute folder from output and added pip requirements.txt
 - 08-15-2017: Added notification (--notify) option with Pushover or Gmail support
 - 08-18-2017: Moved repo from [https://github.com/OrOneEqualsOne/reconned](https://github.com/OrOneEqualsOne/reconned)
+- 09-28-2017: Updated for [Recon-ng](https://bitbucket.org/LaNMaSteR53/recon-ng) dependency + Python3 changes
