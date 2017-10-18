@@ -31,7 +31,9 @@ def get_args():
     parser.add_argument(
         '--fresh', help='Remove output Folder', action='store_true', default=False)
     parser.add_argument(
-        '--notify', help='Notify when script completed', action='store_true', default=False)
+        '--notify', help='Notify when script completed', nargs='?', default=False)
+    parser.add_argument(
+        '--active', help='EyeWitness Active Scan', action='store_true', default=False)
 
     return parser.parse_args()
 
@@ -64,7 +66,7 @@ def banner():
         signal(SIGALRM, lambda x: 1 / 0)
         try:
             alarm(5)
-            RemoveQ = raw_input("\nWould you like to remove the files? [y/n]: ")
+            RemoveQ = input("\nWould you like to remove the files? [y/n]: ")
             if RemoveQ.lower() == "y":
                 os.system("rm *.csv")
                 os.system("rm *.lst")
@@ -72,7 +74,7 @@ def banner():
                 time.sleep(5)
             else:
                 print("\nThank you.\nPlease wait...")
-                time.sleep(5)
+                time.sleep(1)
         except:
             print("\n\nStarting domained...")
 
@@ -142,11 +144,11 @@ def knockpy():
 
 def eyewitness(filename):
     print("\n\n\033[1;31mRunning EyeWitness  \n\033[1;37m")
-    rootdomain = domain
-    EWHTTPScriptIPS = "python {} -f {} --active-scan --no-prompt --headless  -d {}-{}-EW".format(
+    EWHTTPScriptIPS = "python {} -f {} {} --no-prompt --headless  -d {}-{}-EW".format(
         os.path.join(script_path, 'bin/EyeWitness/EyeWitness.py'), filename,
+        '--active-scan' if active else '',
         output_base, time.strftime('%m-%d-%y-%H-%M'))
-    if vpn is True:
+    if vpn:
         print("\n\033[1;31mIf not connected to VPN manually run the following command on reconnect:\n\033[1;37m{}".format(EWHTTPScriptIPS))
         vpncheck()
     print("\n\033[1;31mRunning Command: \033[1;37m{}".format(EWHTTPScriptIPS))
@@ -165,6 +167,10 @@ def upgradeFiles():
         os.makedirs(binpath)
     print('Changing into domained home: {}'.format(script_path))
     os.chdir(script_path)
+    unameChk = subprocess.check_output(['uname', '-am'])
+    if "kali" not in unameChk:
+        print("\n\033[1;31mKali Linux Recommended!\033[1;37m")
+        time.sleep(1)
     sublist3rUpgrade = ("git clone https://github.com/aboul3la/Sublist3r.git ./bin/Sublist3r")
     print("\n\033[1;31mInstalling Sublist3r \033[1;37m")
     os.system(sublist3rUpgrade)
@@ -179,7 +185,6 @@ def upgradeFiles():
     os.system(eyeInstallReq)
     if os.path.isfile("phantomjs") == False:
         print("\nNo phantomjs File Found")
-        unameChk = subprocess.check_output(['uname', '-m'])
         if "x86_64" in unameChk:
             print("\nDownloading 64-Bit phantomjs")
             os.system("wget -O phantomjs https://www.christophertruncer.com/InstallMe/kali2phantomjs")
@@ -227,6 +232,13 @@ def upgradeFiles():
     os.system(massdnsMake)
     print("\nMassdns Installed\n")
     os.system("cp ./bin/subbrute/resolvers.txt ./")
+    if "kali" in unameChk:
+        reconNGInstall = ("apt-get install recon-ng")
+        print("\n\033[1;31mInstalling Recon-ng \033[1;37m")
+        os.system(reconNGInstall)
+        print("\nRecon-ng Installed\n")
+    else:
+        print("Please install Recon-ng - https://bitbucket.org/LaNMaSteR53/")
     print("\n\033[1;31mAll tools installed \033[1;37m")
     print('Changing back to old working directory: {}'.format(old_wd))
     os.chdir(old_wd)
@@ -358,6 +370,7 @@ def vpncheck():
         print("\n{}".format(vpnck.content))
         time.sleep(5)
 
+
 def notified():
     notifySub = ("domained Script Finished")
     notifyMsg = "domained Script Finished for {}".format(domain)
@@ -401,6 +414,7 @@ def notified():
         except:
             print("\nError - Email Notification Not Sent\n")
 
+
 if __name__ == "__main__":
     banner()
     args = get_args()
@@ -417,6 +431,7 @@ if __name__ == "__main__":
     bruteall = args.bruteall
     fresh = args.fresh
     notify = args.notify
+    active = args.active
     if vpn:
         vpncheck()
     if fresh:
