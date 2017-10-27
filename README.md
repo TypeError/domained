@@ -71,6 +71,13 @@ Option | Description
 ##### To-Do List
 - [ ] Multiple Domains
 - [x] ~~Notifications~~
+- [ ] Subdomains from [censys](https://censys.io/)
+- [ ] Subdomains from [Shodan](https://shodan.io/)
+
+##### Thank You to Contributors
+* [ccsplit](https://github.com/ccsplit) - Multiple code improvements including the ability to run domained from any directory
+* [Chan9390](https://github.com/Chan9390) - Updates to the requirements.txt
+
 
 ##### Updates
 - 07-15-2017: Updated to include error handling and updated reconnaissance  techniques from Bugcrowd's [LevelUp](https://pages.bugcrowd.com/level-up-virtual-hacking-conference) Conference (including subbrute/masscan and subdomain lists) - influenced by Jason Haddix's talk [Bug Hunter's Methodology 2.0](https://t.co/Umhj4NUtJ5)
