@@ -30,7 +30,7 @@ Initial Install: *python domained.py --install*
 ````
 First Step:
 Install Required Python Modules: sudo pip install -r ./ext/requirements.txt
-Install Tools: python domained.py --install
+Install Tools: sudo python domained.py --install
 
 Example 1: python domained.py -d example.com
 Uses subdomain example.com (Sublist3r enumall, Knock)

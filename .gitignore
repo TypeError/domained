@@ -2,3 +2,4 @@ bin/
 output/
 ext/notifycfg.ini
 ext/requirements.txt
+resolvers.txt
