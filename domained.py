@@ -228,7 +228,7 @@ def upgradeFiles():
     print("\n\033[1;31mInstalling massdns \033[1;37m")
     os.system(massdnsUpgrade)
     massdnsMake = ("make -C ./bin/massdns")
-    os.system("apt-get install libldns-dev -y")
+    os.system("sudo apt-get install libldns-dev -y")
     os.system(massdnsMake)
     print("\nMassdns Installed\n")
     os.system("cp ./bin/subbrute/resolvers.txt ./")
@@ -381,8 +381,8 @@ def notified():
         poUser = (Config.get('Pushover', 'user'))
         if "device" in Config.options('Pushover'):
             poDevice = (Config.get('Pushover', 'device'))
-            poRequestPayload = {'token': poToken, 'user': poUser, 'device': poDevice, 'title': poTitle,
-                                'message': poMsg}
+            poRequestPayload = {'token': poToken, 'user': poUser, 'device': poDevice, 'title': notifySub,
+                                'message': notifyMsg}
         else:
             poRequestPayload = {'token': poToken, 'user': poUser, 'title': notifySub, 'message': notifyMsg}
             poValidatePayload = {"token": poToken, 'user': poUser}
