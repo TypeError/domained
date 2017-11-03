@@ -106,7 +106,7 @@ def enumall():
 def massdns():
     print("\n\n\033[1;31mRunning massdns \n\033[1;37m")
     word_file = os.path.join(script_path, 'bin/sublst/all.txt' if bruteall else 'bin/sublst/sl-domains.txt')
-    massdnsCMD = '{} -s {} | {} -r resolvers.txt -t A -a -o -w {}-massdns.txt -'.format(
+    massdnsCMD = 'python {} -s {} | {} -r resolvers.txt -t A -a -o -w {}-massdns.txt -'.format(
         os.path.join(script_path, 'bin/subbrute/subbrute.py'), word_file,
         os.path.join(script_path, 'bin/massdns/bin/massdns'), output_base)
     print("\n\033[1;31mRunning Command: \033[1;37m{}".format(massdnsCMD))
