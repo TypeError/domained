@@ -224,7 +224,7 @@ def upgradeFiles():
     print("\n\033[1;31mInstalling Subbrute \033[1;37m")
     os.system(subbruteUpgrade)
     print("\nSubbrute Installed\n")
-    massdnsUpgrade = ("git clone https://github.com/blechschmidt/massdns ./bin/massdns")
+    massdnsUpgrade = ("git clone --branch v0.2 --single-branch https://github.com/blechschmidt/massdns ./bin/massdns")
     print("\n\033[1;31mInstalling massdns \033[1;37m")
     os.system(massdnsUpgrade)
     massdnsMake = ("make -C ./bin/massdns")
