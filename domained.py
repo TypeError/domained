@@ -1,11 +1,23 @@
+#!/usr/bin/env python3
+
+# #Domain name enumeration tool that leverages awesome tools:
+#     - Sublist3r by Ahmed Aboul-Ela (https://github.com/aboul3la/Sublist3r)
+#     - enumall by Jason Haddix (https://github.com/jhaddix/domain)
+#     - Knock by Gianni Amato (https://github.com/guelfoweb/knock)
+#     - Subbrute by TheRook (https://github.com/TheRook/subbrute)
+#     - massdns by B. Blechschmidt (https://github.com/blechschmidt/massdns)
+#     - Recon-ng by Tim Tomes (LaNMaSteR53) (https://bitbucket.org/LaNMaSteR53/recon-ng)
+#     - EyeWitness by ChrisTruncer (https://github.com/ChrisTruncer/EyeWitness)
+#     - SecList (DNS Recon List) by Daniel Miessler (https://github.com/danielmiessler/SecLists)
+#     - LevelUp All.txt Subdomain List by Jason Haddix
+
+# # Nil Values - https://github.com/nilvalues (Caleb Kinney)
+
 import argparse, os, requests, time, csv, datetime, glob, subprocess
 import ConfigParser, smtplib
 from signal import signal, alarm, SIGALRM
 
 today = datetime.date.today()
-
-__author__ = 'Caleb Kinney'
-
 
 def get_args():
     parser = argparse.ArgumentParser(
@@ -45,16 +57,17 @@ if not os.path.exists(newpath):
 
 def banner():
     print("""\033[1;31m
-                                             _ 
-                                            | |
-     _ __ ___  ___ ___  _ __  _ __   ___  __| |
-    | '__/ _ \/ __/ _ \| '_ \| '_ \ / _ \/ _` |
-    | | |  __/ (_| (_) | | | | | | |  __/ (_| |
-    |_|  \___|\___\___/|_| |_|_| |_|\___|\__, |`
+                    ,------. ,---.        
+               ,--.'  .--.  '|   |,--.    
+              |  .''--' _|  ||  .''.  |   
+            .'  /   .--' __' |  |   \  `. 
+            '.  \   `---'    `--'   /  .' 
+              |  '. .---.    .--. .'  |   
+               `--' '---'    '--' '--'    
          ___/ /__  __ _  ___ _(_)__  ___ ___/ /
         / _  / _ \/  ' \/ _ `/ / _ \/ -_) _  / 
         \_,_/\___/_/_/_/\_,_/_/_//_/\__/\_,_/  
-    \033[1;34m\t\t\t\treconned.org\033[1;m""")
+    \033[1;34m\t\t\t\tnullvalues.com\033[1;m""")
     globpath = ("*.csv")
     globpath2 = ("*.lst")
     if (next(glob.iglob(globpath), None)) or (next(glob.iglob(globpath2), None)):
@@ -96,7 +109,7 @@ def sublist3r(brute=False):
 def enumall():
     print("\n\n\033[1;31mRunning Enumall \n\033[1;37m")
     enumallCMD = "python {} {}".format(
-    os.path.join(script_path, 'bin/domain/enumall.py'), domain)
+        os.path.join(script_path, 'bin/domain/enumall.py'), domain)
     print("\n\033[1;31mRunning Command: \033[1;37m{}".format(enumallCMD))
     os.system(enumallCMD)
     print("\n\033[1;31menumall Complete\033[1;37m")
@@ -149,7 +162,9 @@ def eyewitness(filename):
         '--active-scan' if active else '',
         output_base, time.strftime('%m-%d-%y-%H-%M'))
     if vpn:
-        print("\n\033[1;31mIf not connected to VPN manually run the following command on reconnect:\n\033[1;37m{}".format(EWHTTPScriptIPS))
+        print(
+            "\n\033[1;31mIf not connected to VPN manually run the following command on reconnect:\n\033[1;37m{}".format(
+                EWHTTPScriptIPS))
         vpncheck()
     print("\n\033[1;31mRunning Command: \033[1;37m{}".format(EWHTTPScriptIPS))
     os.system(EWHTTPScriptIPS)
@@ -242,6 +257,7 @@ def upgradeFiles():
     print("\n\033[1;31mAll tools installed \033[1;37m")
     print('Changing back to old working directory: {}'.format(old_wd))
     os.chdir(old_wd)
+
 
 def subdomainfile():
     sublist3rFileName = "{}_sublist3r.txt".format(output_base)
