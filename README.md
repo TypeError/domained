@@ -1,5 +1,5 @@
 # domained
-Domain Name Enumeration Tool
+A domain name enumeration tool
 
 **Gist:** Some ~~terrible~~ continually updated python code leveraging some awesome tools that I use for bug bounty reconnaissance. 
 
@@ -73,15 +73,19 @@ Option | Description
 - [x] ~~Notifications~~
 - [ ] Subdomains from [censys](https://censys.io/)
 - [ ] Subdomains from [Shodan](https://shodan.io/)
+- [ ] Web Frontend/Dashbord
 
 ##### Thank You to Contributors
 * [ccsplit](https://github.com/ccsplit) - Multiple code improvements including the ability to run domained from any directory
+* [jafoca](https://github.com/jafoca) - Massdns fix
+* [mortymorty](https://github.com/mortymorty) - SecList brute file fix 
 * [Chan9390](https://github.com/Chan9390) - Updates to the requirements.txt
 
 
-##### Updates
+##### Major Updates
 - 07-15-2017: Updated to include error handling and updated reconnaissance  techniques from Bugcrowd's [LevelUp](https://pages.bugcrowd.com/level-up-virtual-hacking-conference) Conference (including subbrute/masscan and subdomain lists) - influenced by Jason Haddix's talk [Bug Hunter's Methodology 2.0](https://t.co/Umhj4NUtJ5)
 - 08-09-2017: Various fixes (+ phantomjs error), added --fresh option, removed redundant PyBrute folder from output and added pip requirements.txt
 - 08-15-2017: Added notification (--notify) option with Pushover or Gmail support
 - 08-18-2017: Moved repo from [https://github.com/OrOneEqualsOne/reconned](https://github.com/OrOneEqualsOne/reconned)
 - 09-28-2017: Updated for [Recon-ng](https://bitbucket.org/LaNMaSteR53/recon-ng) dependency + Python3 changes
+ 
