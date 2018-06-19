@@ -7,7 +7,12 @@ A domain name enumeration tool
 
 Domained uses several subdomain enumeration tools and wordlists to create a unique list of subdmains that are passed to EyeWitness for reporting with categorized screenshots, server response headers and signature based default credential checking. *(resources are saved to ./bin and output is saved to ./output)*
 
-Initial Install: *python domained.py --install*
+##### Initial Install: 
+* domained tools: `python domained.py --install`
+* Python required modules: `sudo pip install -r ./ext/requirements.txt`
+###### Other Dependencies: 
+* ldns library for DNS programming: `sudo apt-get install libldns-dev -y`
+* Go Programming Language: `sudo apt-get install golang`
 
 **_NOTE: This is an active recon – only perform on applications that you have permission to test against._**
 
@@ -20,6 +25,7 @@ Initial Install: *python domained.py --install*
 4. [Subbrute](https://github.com/TheRook/subbrute) by TheRook 
 5. [massdns](https://github.com/blechschmidt/massdns) by B. Blechschmidt
 6. [Recon-ng](https://bitbucket.org/LaNMaSteR53/recon-ng) by Tim Tomes (LaNMaSteR53)
+7. [Amass](https://github.com/caffix/amass) by Jeff Foley (caffix)
 
 ###### Reporting + Wordlists:
 - [EyeWitness](https://github.com/ChrisTruncer/EyeWitness) by ChrisTruncer  
@@ -33,19 +39,22 @@ Install Required Python Modules: sudo pip install -r ./ext/requirements.txt
 Install Tools: sudo python domained.py --install
 
 Example 1: python domained.py -d example.com
-Uses subdomain example.com (Sublist3r enumall, Knock)
+Uses subdomain example.com (Sublist3r enumall, Knock, Amass)
 
 Example 2: python domained.py -d example.com -b -p --vpn
-Uses subdomain example.com with seclist subdomain list bruteforcing (massdns, subbrute, Sublist3r and enumall), adds ports 8443/8080 and checks if on VPN
+Uses subdomain example.com with seclist subdomain list bruteforcing (massdns, subbrute, Sublist3r, Amass and enumall), adds ports 8443/8080 and checks if on VPN
 
 Example 3: python domained.py -d example.com -b --bruteall
-Uses subdomain example.com with large-all.txt bruteforcing (massdns, subbrute, Sublist3r and enumall)
+Uses subdomain example.com with large-all.txt bruteforcing (massdns, subbrute, Sublist3r, Amass and enumall)
 
 Example 4: python domained.py -d example.com --quick
 Uses subdomain example.com and only Sublist3r (+subbrute)
 
 Example 5: python domained.py -d example.com --quick --notify
 Uses subdomain example.com, only Sublist3r (+subbrute) and notification
+
+Example 6: python domained.py -d example.com --noeyewitness
+Uses subdomain example.com with no EyeWitness
 
 Note: --bruteall must be used with the -b flag
 ````
@@ -59,6 +68,7 @@ Option | Description
 --fresh  |   Delete old data from output folder
 --notify  |   Send Pushover or Gmail Notifications
 --active  |   EyeWitness Active Scan
+--noeyewitness  |   No Eyewitness
 -d  |   The domain you want to preform recon on
 -b  |   Bruteforce with subbrute/massdns and SecList wordlist
 -s n    |   Only HTTPs domains
@@ -86,6 +96,6 @@ Option | Description
 - 07-15-2017: Updated to include error handling and updated reconnaissance  techniques from Bugcrowd's [LevelUp](https://pages.bugcrowd.com/level-up-virtual-hacking-conference) Conference (including subbrute/masscan and subdomain lists) - influenced by Jason Haddix's talk [Bug Hunter's Methodology 2.0](https://t.co/Umhj4NUtJ5)
 - 08-09-2017: Various fixes (+ phantomjs error), added --fresh option, removed redundant PyBrute folder from output and added pip requirements.txt
 - 08-15-2017: Added notification (--notify) option with Pushover or Gmail support
-- 08-18-2017: Moved repo from [https://github.com/OrOneEqualsOne/reconned](https://github.com/OrOneEqualsOne/reconned)
+- 08-18-2017: Moved repo from [OrOneEqualsOne/reconned](https://github.com/OrOneEqualsOne/reconned)
 - 09-28-2017: Updated for [Recon-ng](https://bitbucket.org/LaNMaSteR53/recon-ng) dependency + Python3 changes
- 
+- 06-20-2018: Added [Amass](https://github.com/caffix/amass) and option for no EyeWitness

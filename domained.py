@@ -6,18 +6,20 @@
 #     - Knock by Gianni Amato (https://github.com/guelfoweb/knock)
 #     - Subbrute by TheRook (https://github.com/TheRook/subbrute)
 #     - massdns by B. Blechschmidt (https://github.com/blechschmidt/massdns)
+#     - Amass by Jeff Foley (https://github.com/caffix/amass)
 #     - Recon-ng by Tim Tomes (LaNMaSteR53) (https://bitbucket.org/LaNMaSteR53/recon-ng)
 #     - EyeWitness by ChrisTruncer (https://github.com/ChrisTruncer/EyeWitness)
 #     - SecList (DNS Recon List) by Daniel Miessler (https://github.com/danielmiessler/SecLists)
 #     - LevelUp All.txt Subdomain List by Jason Haddix
 
-# # Nil Values - https://github.com/nilvalues (Caleb Kinney)
+# # Github - https://github.com/cakinney (Caleb Kinney)
 
 import argparse, os, requests, time, csv, datetime, glob, subprocess
 import ConfigParser, smtplib
 from signal import signal, alarm, SIGALRM
 
 today = datetime.date.today()
+
 
 def get_args():
     parser = argparse.ArgumentParser(
@@ -46,6 +48,8 @@ def get_args():
         '--notify', help='Notify when script completed', nargs='?', default=False)
     parser.add_argument(
         '--active', help='EyeWitness Active Scan', action='store_true', default=False)
+    parser.add_argument(
+        '--noeyewitness', help='No EyeWitness', action='store_true', default=False)
 
     return parser.parse_args()
 
@@ -57,17 +61,10 @@ if not os.path.exists(newpath):
 
 def banner():
     print("""\033[1;31m
-                    ,------. ,---.        
-               ,--.'  .--.  '|   |,--.    
-              |  .''--' _|  ||  .''.  |   
-            .'  /   .--' __' |  |   \  `. 
-            '.  \   `---'    `--'   /  .' 
-              |  '. .---.    .--. .'  |   
-               `--' '---'    '--' '--'    
          ___/ /__  __ _  ___ _(_)__  ___ ___/ /
         / _  / _ \/  ' \/ _ `/ / _ \/ -_) _  / 
         \_,_/\___/_/_/_/\_,_/_/_//_/\__/\_,_/  
-    \033[1;34m\t\t\t\tnullvalues.com\033[1;m""")
+    \033[1;34m\t\t\tgithub.com/cakinney\033[1;m""")
     globpath = ("*.csv")
     globpath2 = ("*.lst")
     if (next(glob.iglob(globpath), None)) or (next(glob.iglob(globpath2), None)):
@@ -155,6 +152,16 @@ def knockpy():
     time.sleep(1)
 
 
+def amass():
+    print("\n\n\033[1;31mRunning Amass \n\033[1;37m")
+    amassFileName = "{}_amass.txt".format(output_base)
+    amassCmd = "~/go/bin/amass -d {} -o {}".format(domain, amassFileName)
+    print("\n\033[1;31mRunning Command: \033[1;37m{}".format(amassCmd))
+    os.system(amassCmd)
+    print("\n\033[1;31mAmass Complete\033[1;37m")
+    time.sleep(1)
+
+
 def eyewitness(filename):
     print("\n\n\033[1;31mRunning EyeWitness  \n\033[1;37m")
     EWHTTPScriptIPS = "python {} -f {} {} --no-prompt --headless  -d {}-{}-EW".format(
@@ -189,30 +196,15 @@ def upgradeFiles():
     sublist3rUpgrade = ("git clone https://github.com/aboul3la/Sublist3r.git ./bin/Sublist3r")
     print("\n\033[1;31mInstalling Sublist3r \033[1;37m")
     os.system(sublist3rUpgrade)
-    subInstallReq = ("sudo pip install -r bin/Sublist3r/requirements.txt")
+    subInstallReq = ("pip install -r bin/Sublist3r/requirements.txt")
     os.system(subInstallReq)
     print("Sublist3r Installed\n")
     eyeWitnessUpgrade = ("git clone https://github.com/ChrisTruncer/EyeWitness.git ./bin/EyeWitness")
     print("\n\033[1;31mInstalling EyeWitness \033[1;37m" + eyeWitnessUpgrade)
     os.system(eyeWitnessUpgrade)
-    eyeInstallReq = ("sudo bash bin/EyeWitness/setup/setup.sh")
+    eyeInstallReq = ("bash bin/EyeWitness/setup/setup.sh")
     print("\n\033[1;31mRunning Command: \033[1;37m")
     os.system(eyeInstallReq)
-    if os.path.isfile("phantomjs") == False:
-        print("\nNo phantomjs File Found")
-        if "x86_64" in unameChk:
-            print("\nDownloading 64-Bit phantomjs")
-            os.system("wget -O phantomjs https://www.christophertruncer.com/InstallMe/kali2phantomjs")
-        elif "arm" in unameChk:
-            print("\nDownloading RaspberryPi phantomjs")
-            os.system(
-                "wget -O phantomjs https://github.com/fg2it/phantomjs-on-raspberry/releases/download/v2.1.1-wheezy-jessie-armv6/phantomjs")
-        else:
-            print("\nDownloading 32-Bit phantomjs")
-            os.system("wget -O phantomjs https://www.christophertruncer.com/InstallMe/phantom32kali2")
-        os.system("chmod +x phantomjs")
-    delGeco = ("rm gecko*")
-    os.system(delGeco)
     cpphantomjs = ("cp phantomjs ./bin/EyeWitness/bin/")
     os.system(cpphantomjs)
     movephantomjs = ("mv phantomjs bin/")
@@ -239,11 +231,13 @@ def upgradeFiles():
     print("\n\033[1;31mInstalling Subbrute \033[1;37m")
     os.system(subbruteUpgrade)
     print("\nSubbrute Installed\n")
+    amassUpgrade = ("go get -u github.com/caffix/amass")
+    print("\n\033[1;31mInstalling Amass \033[1;37m")
+    os.system(amassUpgrade)
     massdnsUpgrade = ("git clone --branch v0.2 --single-branch https://github.com/blechschmidt/massdns ./bin/massdns")
     print("\n\033[1;31mInstalling massdns \033[1;37m")
     os.system(massdnsUpgrade)
     massdnsMake = ("make -C ./bin/massdns")
-    os.system("sudo apt-get install libldns-dev -y")
     os.system(massdnsMake)
     print("\nMassdns Installed\n")
     os.system("cp ./bin/subbrute/resolvers.txt ./")
@@ -265,6 +259,7 @@ def subdomainfile():
     subdomainAllFile = "{}-all.txt".format(output_base)
     knockpyFileName = "{}_knock.csv.txt".format(output_base)
     massdnsFileName = "{}-massdns.txt".format(output_base)
+    amassFileName = "{}_amass.txt".format(output_base)
     f1 = open(subdomainAllFile, "w")
     f1.close()
     print("\nOpening Sublist3r File\n")
@@ -310,7 +305,7 @@ def subdomainfile():
         with open(knockpyFileName) as f:
             SubHosts = f.read().splitlines()
         f.close()
-        time.sleep(2)
+        time.sleep(1)
         subdomainCounter = 0
         f1 = open(subdomainAllFile, "a")
         f1.writelines("\n\nknock")
@@ -330,7 +325,7 @@ def subdomainfile():
         with open(massdnsFileName) as f:
             SubHosts = f.read().splitlines()
         f.close()
-        time.sleep(2)
+        time.sleep(1)
         subdomainCounter = 0
         f1 = open(subdomainAllFile, "a")
         f1.writelines("\n\nmassdns")
@@ -343,6 +338,26 @@ def subdomainfile():
         f1.close()
         os.remove(massdnsFileName)
         print("\n{} Subdomains discovered by massdns".format(subdomainCounter))
+    except:
+        print("\nError Opening massdns File!\n")
+    print("\nOpening Amass File\n")
+    try:
+        with open(amassFileName) as f:
+            SubHosts = f.read().splitlines()
+        f.close()
+        time.sleep(1)
+        subdomainCounter = 0
+        f1 = open(subdomainAllFile, "a")
+        f1.writelines("\n\namass")
+        for hosts in SubHosts:
+            hosts = hosts.split(".	")[0]
+            if domain in hosts:
+                hosts = "".join(hosts)
+                f1.writelines("\n" + hosts)
+                subdomainCounter = subdomainCounter + 1
+        f1.close()
+        os.remove(amassFileName)
+        print("\n{} Subdomains discovered by Amass".format(subdomainCounter))
     except:
         print("\nError Opening massdns File!\n")
     print("\nCombining Domains Lists\n")
@@ -362,7 +377,7 @@ def subdomainfile():
                 if ports is not False:
                     uniqueDomainsOut.writelines("http://{}:8080\n".format(domains))
     uniqueDomainsOut.close()
-    time.sleep(2)
+    time.sleep(1)
     rootdomainStrip = domain.replace(".", "_")
     print("\nCleaning Up Old Files\n")
     try:
@@ -370,11 +385,12 @@ def subdomainfile():
         os.system("rm {}*".format(rootdomainStrip))
     except:
         print("\nError Removing Files!\n")
-    eyewitness(subdomainUniqueFile)
+    if not noeyewitness:
+        eyewitness(subdomainUniqueFile)
 
 
 def vpncheck():
-    vpnck = requests.get('http://ipinfo.io')
+    vpnck = requests.get('https://ifconfig.co/json')
     # Change "Comcast" to your provider or City")
     if "Comcast" in vpnck.content:
         print("\n\033[1;31mNot connected via VPN \033[1;37m")
@@ -448,6 +464,7 @@ if __name__ == "__main__":
     fresh = args.fresh
     notify = args.notify
     active = args.active
+    noeyewitness = args.noeyewitness
     if vpn:
         vpncheck()
     if fresh:
@@ -466,11 +483,13 @@ if __name__ == "__main__":
                 massdns()
                 sublist3r()
                 enumall()
+                amass()
                 subdomainfile()
             else:
                 sublist3r()
                 enumall()
                 knockpy()
+                amass()
                 subdomainfile()
         if notify:
             notified()
