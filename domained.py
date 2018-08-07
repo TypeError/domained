@@ -15,7 +15,7 @@
 # # Github - https://github.com/cakinney (Caleb Kinney)
 
 import argparse, os, requests, time, csv, datetime, glob, subprocess
-import ConfigParser, smtplib
+import configparser, smtplib
 from signal import signal, alarm, SIGALRM
 
 today = datetime.date.today()
@@ -189,7 +189,7 @@ def upgradeFiles():
         os.makedirs(binpath)
     print('Changing into domained home: {}'.format(script_path))
     os.chdir(script_path)
-    unameChk = subprocess.check_output(['uname', '-am'])
+    unameChk = str(subprocess.check_output(['uname', '-am']))
     if "kali" not in unameChk:
         print("\n\033[1;31mKali Linux Recommended!\033[1;37m")
         time.sleep(1)
