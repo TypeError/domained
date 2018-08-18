@@ -84,12 +84,14 @@ Option | Description
 - [ ] Subdomains from [censys](https://censys.io/)
 - [ ] Subdomains from [Shodan](https://shodan.io/)
 - [ ] Web Frontend/Dashbord
+- [ ] Add SubFinder/SubOver
 
 ##### Thank You to Contributors
 * [ccsplit](https://github.com/ccsplit) - Multiple code improvements including the ability to run domained from any directory
 * [jafoca](https://github.com/jafoca) - Massdns fix
 * [mortymorty](https://github.com/mortymorty) - SecList brute file fix 
 * [Chan9390](https://github.com/Chan9390) - Updates to the requirements.txt
+* [dainok](https://github.com/dainok) - Python 3.6+ fixes
 
 
 ##### Major Updates
