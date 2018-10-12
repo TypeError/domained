@@ -62,8 +62,8 @@ if not os.path.exists(newpath):
 def banner():
     print("""\033[1;31m
          ___/ /__  __ _  ___ _(_)__  ___ ___/ /
-        / _  / _ \/  ' \/ _ `/ / _ \/ -_) _  / 
-        \_,_/\___/_/_/_/\_,_/_/_//_/\__/\_,_/  
+        / _  / _ \/  ' \/ _ `/ / _ \/ -_) _  /
+        \_,_/\___/_/_/_/\_,_/_/_//_/\__/\_,_/
     \033[1;34m\t\t\tgithub.com/cakinney\033[1;m""")
     globpath = ("*.csv")
     globpath2 = ("*.lst")
@@ -161,6 +161,14 @@ def amass():
     print("\n\033[1;31mAmass Complete\033[1;37m")
     time.sleep(1)
 
+def subfinder():
+    print("\n\n\033[1;31mRunning Subfinder \n\033[1;37m")
+    subfinderFileName = "{}_subfinder.txt".format(output_base)
+    subfinderCmd = "/root/go/bin/subfinder -d {} -o {}".format(domain, subfinderFileName)
+    print("\n\033[1;31mRunning Command: \033[1;37m{}".format(subfinderCmd))
+    os.system(subfinderCmd)
+    print("\n\033[1;31msubfinder Complete\033[1;37m")
+    time.sleep(1)
 
 def eyewitness(filename):
     print("\n\n\033[1;31mRunning EyeWitness  \n\033[1;37m")
@@ -234,6 +242,9 @@ def upgradeFiles():
     amassUpgrade = ("go get -u github.com/caffix/amass")
     print("\n\033[1;31mInstalling Amass \033[1;37m")
     os.system(amassUpgrade)
+    subfinderUpgrade = ("go get -u github.com/subfinder/subfinder")
+    print("\n\033[1;31mInstalling Subfinder \033[1;37m")
+    os.system(subfinderUpgrade)
     massdnsUpgrade = ("git clone --branch v0.2 --single-branch https://github.com/blechschmidt/massdns ./bin/massdns")
     print("\n\033[1;31mInstalling massdns \033[1;37m")
     os.system(massdnsUpgrade)
@@ -260,6 +271,7 @@ def subdomainfile():
     knockpyFileName = "{}_knock.csv.txt".format(output_base)
     massdnsFileName = "{}-massdns.txt".format(output_base)
     amassFileName = "{}_amass.txt".format(output_base)
+    subfinderFileName = "{}_subfinder.txt".format(output_base)
     f1 = open(subdomainAllFile, "w")
     f1.close()
     print("\nOpening Sublist3r File\n")
@@ -360,6 +372,23 @@ def subdomainfile():
         print("\n{} Subdomains discovered by Amass".format(subdomainCounter))
     except:
         print("\nError Opening massdns File!\n")
+    try:
+        with open(subfinderFileName) as f:
+            SubHosts = f.read().splitlines()
+        f.close()
+        time.sleep(2)
+        subdomainCounter = 0
+        f1 = open(subdomainAllFile, "a")
+        f1.writelines("\n\nsubfinder")
+        for hosts in SubHosts:
+            hosts = "".join(hosts)
+            f1.writelines("\n" + hosts)
+            subdomainCounter = subdomainCounter + 1
+        f1.close()
+        os.remove(subfinderFileName)
+        print("\n{} Subdomains discovered by Subfinder".format(subdomainCounter))
+    except:
+        print("\nError Opening Subfinder File!\n")
     print("\nCombining Domains Lists\n")
     domainList = open(subdomainAllFile, 'r')
     uniqueDomains = set(domainList)
@@ -490,6 +519,7 @@ if __name__ == "__main__":
                 enumall()
                 knockpy()
                 amass()
+                subfinder()
                 subdomainfile()
         if notify:
             notified()
