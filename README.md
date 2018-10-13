@@ -26,6 +26,7 @@ Domained uses several subdomain enumeration tools and wordlists to create a uniq
 5. [massdns](https://github.com/blechschmidt/massdns) by B. Blechschmidt
 6. [Recon-ng](https://bitbucket.org/LaNMaSteR53/recon-ng) by Tim Tomes (LaNMaSteR53)
 7. [Amass](https://github.com/caffix/amass) by Jeff Foley (caffix)
+8. [SubFinder](https://github.com/subfinder/subfinder)
 
 ###### Reporting + Wordlists:
 - [EyeWitness](https://github.com/ChrisTruncer/EyeWitness) by ChrisTruncer  
@@ -83,8 +84,8 @@ Option | Description
 - [x] ~~Notifications~~
 - [ ] Subdomains from [censys](https://censys.io/)
 - [ ] Subdomains from [Shodan](https://shodan.io/)
-- [ ] Web Frontend/Dashbord
-- [ ] Add SubFinder/SubOver
+- [ ] Web Frontend/Dashboard
+- [x] ~~Add SubFinder~~
 
 ##### Thank You to Contributors
 * [ccsplit](https://github.com/ccsplit) - Multiple code improvements including the ability to run domained from any directory
@@ -92,6 +93,7 @@ Option | Description
 * [mortymorty](https://github.com/mortymorty) - SecList brute file fix 
 * [Chan9390](https://github.com/Chan9390) - Updates to the requirements.txt
 * [dainok](https://github.com/dainok) - Python 3.6+ fixes
+* [Apoorv Raj Saxena](https://github.com/apoorvrajsaxena) - Added SubOver
 
 
 ##### Major Updates
@@ -101,3 +103,4 @@ Option | Description
 - 08-18-2017: Moved repo from [OrOneEqualsOne/reconned](https://github.com/OrOneEqualsOne/reconned)
 - 09-28-2017: Updated for [Recon-ng](https://bitbucket.org/LaNMaSteR53/recon-ng) dependency + Python3 changes
 - 06-20-2018: Added [Amass](https://github.com/caffix/amass) and option for no EyeWitness
+- 10-12-2018: Added [SubFinder](https://github.com/subfinder/subfinder)

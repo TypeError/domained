@@ -7,6 +7,7 @@
 #     - Subbrute by TheRook (https://github.com/TheRook/subbrute)
 #     - massdns by B. Blechschmidt (https://github.com/blechschmidt/massdns)
 #     - Amass by Jeff Foley (https://github.com/caffix/amass)
+#     - SubFinder (https://github.com/subfinder/subfinder)
 #     - Recon-ng by Tim Tomes (LaNMaSteR53) (https://bitbucket.org/LaNMaSteR53/recon-ng)
 #     - EyeWitness by ChrisTruncer (https://github.com/ChrisTruncer/EyeWitness)
 #     - SecList (DNS Recon List) by Daniel Miessler (https://github.com/danielmiessler/SecLists)
@@ -161,6 +162,7 @@ def amass():
     print("\n\033[1;31mAmass Complete\033[1;37m")
     time.sleep(1)
 
+
 def subfinder():
     print("\n\n\033[1;31mRunning Subfinder \n\033[1;37m")
     subfinderFileName = "{}_subfinder.txt".format(output_base)
@@ -169,6 +171,7 @@ def subfinder():
     os.system(subfinderCmd)
     print("\n\033[1;31msubfinder Complete\033[1;37m")
     time.sleep(1)
+
 
 def eyewitness(filename):
     print("\n\n\033[1;31mRunning EyeWitness  \n\033[1;37m")
