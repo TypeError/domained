@@ -93,7 +93,7 @@ Option | Description
 * [mortymorty](https://github.com/mortymorty) - SecList brute file fix 
 * [Chan9390](https://github.com/Chan9390) - Updates to the requirements.txt
 * [dainok](https://github.com/dainok) - Python 3.6+ fixes
-* [Apoorv Raj Saxena](https://github.com/apoorvrajsaxena) - Added SubOver
+* [Apoorv Raj Saxena](https://github.com/apoorvrajsaxena) - Added SubFinder
 
 
 ##### Major Updates
