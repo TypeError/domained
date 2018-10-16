@@ -5,7 +5,7 @@ A domain name enumeration tool
 
 **The tools contained in domained requires Kali Linux (preferred) or Debian 7+ and Recon-ng** 
 
-Domained uses several subdomain enumeration tools and wordlists to create a unique list of subdmains that are passed to EyeWitness for reporting with categorized screenshots, server response headers and signature based default credential checking. *(resources are saved to ./bin and output is saved to ./output)*
+domained uses several subdomain enumeration tools and wordlists to create a unique list of subdomains that are passed to EyeWitness for reporting with categorized screenshots, server response headers and signature based default credential checking. *(resources are saved to ./bin and output is saved to ./output)*
 
 ##### Initial Install: 
 * domained tools: `python domained.py --install`
@@ -26,7 +26,7 @@ Domained uses several subdomain enumeration tools and wordlists to create a uniq
 5. [massdns](https://github.com/blechschmidt/massdns) by B. Blechschmidt
 6. [Recon-ng](https://bitbucket.org/LaNMaSteR53/recon-ng) by Tim Tomes (LaNMaSteR53)
 7. [Amass](https://github.com/caffix/amass) by Jeff Foley (caffix)
-8. [SubFinder](https://github.com/subfinder/subfinder)
+8. [SubFinder](https://github.com/subfinder/subfinder) by by Ice3man543
 
 ###### Reporting + Wordlists:
 - [EyeWitness](https://github.com/ChrisTruncer/EyeWitness) by ChrisTruncer  
@@ -40,19 +40,19 @@ Install Required Python Modules: sudo pip install -r ./ext/requirements.txt
 Install Tools: sudo python domained.py --install
 
 Example 1: python domained.py -d example.com
-Uses subdomain example.com (Sublist3r enumall, Knock, Amass)
+Uses subdomain example.com (Sublist3r (+subbrute), enumall, Knock, Amass, and SubFinder)
 
 Example 2: python domained.py -d example.com -b -p --vpn
-Uses subdomain example.com with seclist subdomain list bruteforcing (massdns, subbrute, Sublist3r, Amass and enumall), adds ports 8443/8080 and checks if on VPN
+Uses subdomain example.com with seclist subdomain list bruteforcing (massdns, subbrute, Sublist3r, Amass, enumall, and SubFinder), adds ports 8443/8080 and checks if on VPN
 
 Example 3: python domained.py -d example.com -b --bruteall
-Uses subdomain example.com with large-all.txt bruteforcing (massdns, subbrute, Sublist3r, Amass and enumall)
+Uses subdomain example.com with large-all.txt bruteforcing (massdns, subbrute, Sublist3r, Amass, enumall and SubFinder)
 
 Example 4: python domained.py -d example.com --quick
-Uses subdomain example.com and only Sublist3r (+subbrute)
+Uses subdomain example.com and only Amass and SubFinder
 
 Example 5: python domained.py -d example.com --quick --notify
-Uses subdomain example.com, only Sublist3r (+subbrute) and notification
+Uses subdomain example.com, only Amass and SubFinder and notification
 
 Example 6: python domained.py -d example.com --noeyewitness
 Uses subdomain example.com with no EyeWitness
@@ -62,9 +62,9 @@ Note: --bruteall must be used with the -b flag
 
 Option | Description
 ------ | --- 
---install/--upgrade  |  Both do the same function – install all prerequisite tools (Kali is a prerequisite AFAIK)
+--install/--upgrade  |  Both do the same function – install all prerequisite tools
 --vpn   |   Check if you are on VPN (update with your provider)
---quick |   Use ONLY Sublis3r's subdomain methods (+ subbrute)
+--quick |   Use ONLY Amass and SubFinder
 --bruteall  |   Bruteforce with JHaddix All.txt List instead of SecList
 --fresh  |   Delete old data from output folder
 --notify  |   Send Pushover or Gmail Notifications

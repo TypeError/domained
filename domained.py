@@ -6,8 +6,8 @@
 #     - Knock by Gianni Amato (https://github.com/guelfoweb/knock)
 #     - Subbrute by TheRook (https://github.com/TheRook/subbrute)
 #     - massdns by B. Blechschmidt (https://github.com/blechschmidt/massdns)
-#     - Amass by Jeff Foley (https://github.com/caffix/amass)
-#     - SubFinder (https://github.com/subfinder/subfinder)
+#     - Amass by Jeff by Foley (https://github.com/caffix/amass)
+#     - SubFinder by Ice3man543 (https://github.com/subfinder/subfinder)
 #     - Recon-ng by Tim Tomes (LaNMaSteR53) (https://bitbucket.org/LaNMaSteR53/recon-ng)
 #     - EyeWitness by ChrisTruncer (https://github.com/ChrisTruncer/EyeWitness)
 #     - SecList (DNS Recon List) by Daniel Miessler (https://github.com/danielmiessler/SecLists)
@@ -15,8 +15,16 @@
 
 # # Github - https://github.com/cakinney (Caleb Kinney)
 
-import argparse, os, requests, time, csv, datetime, glob, subprocess
-import configparser, smtplib
+import argparse
+import configparser
+import csv
+import datetime
+import glob
+import os
+import requests
+import smtplib
+import subprocess
+import time
 from signal import signal, alarm, SIGALRM
 
 today = datetime.date.today()
@@ -438,7 +446,7 @@ def vpncheck():
 def notified():
     notifySub = ("domained Script Finished")
     notifyMsg = "domained Script Finished for {}".format(domain)
-    Config = ConfigParser.ConfigParser()
+    Config = configparser.ConfigParser()
     Config.read(os.path.join(script_path, "ext/notifycfg.ini"))
     if (Config.get('Pushover', 'enable')) == "True":
         poToken = (Config.get('Pushover', 'token'))
@@ -510,22 +518,23 @@ if __name__ == "__main__":
     else:
         if domain:
             if quick:
-                sublist3r(True)
+                amass()
+                subfinder()
             elif bruteforce:
                 massdns()
                 sublist3r()
                 enumall()
                 amass()
-                subdomainfile()
+                subfinder()
             else:
-                sublist3r()
+                sublist3r(True)
                 enumall()
                 knockpy()
                 amass()
                 subfinder()
-                subdomainfile()
-        if notify:
-            notified()
+            subdomainfile()
+            if notify:
+                notified()
         else:
             print("\nPlease provide a domain. Ex. -d example.com")
     print("\n\033[1;34mAll your subdomain are belong to us\033[1;37m")
