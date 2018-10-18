@@ -6,7 +6,7 @@
 #     - Knock by Gianni Amato (https://github.com/guelfoweb/knock)
 #     - Subbrute by TheRook (https://github.com/TheRook/subbrute)
 #     - massdns by B. Blechschmidt (https://github.com/blechschmidt/massdns)
-#     - Amass by Jeff by Foley (https://github.com/caffix/amass)
+#     - Amass by Jeff by Foley (https://github.com/OWASP/Amass)
 #     - SubFinder by Ice3man543 (https://github.com/subfinder/subfinder)
 #     - Recon-ng by Tim Tomes (LaNMaSteR53) (https://bitbucket.org/LaNMaSteR53/recon-ng)
 #     - EyeWitness by ChrisTruncer (https://github.com/ChrisTruncer/EyeWitness)
@@ -174,7 +174,7 @@ def amass():
 def subfinder():
     print("\n\n\033[1;31mRunning Subfinder \n\033[1;37m")
     subfinderFileName = "{}_subfinder.txt".format(output_base)
-    subfinderCmd = "/root/go/bin/subfinder -d {} -o {}".format(domain, subfinderFileName)
+    subfinderCmd = "~/go/bin/subfinder -d {} -o {}".format(domain, subfinderFileName)
     print("\n\033[1;31mRunning Command: \033[1;37m{}".format(subfinderCmd))
     os.system(subfinderCmd)
     print("\n\033[1;31msubfinder Complete\033[1;37m")
@@ -250,7 +250,7 @@ def upgradeFiles():
     print("\n\033[1;31mInstalling Subbrute \033[1;37m")
     os.system(subbruteUpgrade)
     print("\nSubbrute Installed\n")
-    amassUpgrade = ("go get -u github.com/caffix/amass")
+    amassUpgrade = ("go get -u github.com/OWASP/Amass/...")
     print("\n\033[1;31mInstalling Amass \033[1;37m")
     os.system(amassUpgrade)
     subfinderUpgrade = ("go get -u github.com/subfinder/subfinder")
@@ -431,8 +431,8 @@ def subdomainfile():
 
 def vpncheck():
     vpnck = requests.get('https://ifconfig.co/json')
-    # Change "Comcast" to your provider or City")
-    if "Comcast" in vpnck.content:
+    # Change "City" to your city")
+    if "City" in vpnck.text:
         print("\n\033[1;31mNot connected via VPN \033[1;37m")
         print("\n{}".format(vpnck.content))
         print("\n\033[1;31mQuitting domained... \033[1;37m")

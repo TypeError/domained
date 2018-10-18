@@ -11,8 +11,11 @@ domained uses several subdomain enumeration tools and wordlists to create a uniq
 * domained tools: `python domained.py --install`
 * Python required modules: `sudo pip install -r ./ext/requirements.txt`
 ###### Other Dependencies: 
-* ldns library for DNS programming: `sudo apt-get install libldns-dev -y`
-* Go Programming Language: `sudo apt-get install golang`
+* [ldns](https://www.nlnetlabs.nl/documentation/ldns/) library for DNS programming:
+    * `sudo apt-get install libldns-dev -y`
+* [Go](https://golang.org) Programming Language: 
+    * `sudo apt-get install golang`
+
 
 **_NOTE: This is an active recon – only perform on applications that you have permission to test against._**
 
@@ -25,7 +28,7 @@ domained uses several subdomain enumeration tools and wordlists to create a uniq
 4. [Subbrute](https://github.com/TheRook/subbrute) by TheRook 
 5. [massdns](https://github.com/blechschmidt/massdns) by B. Blechschmidt
 6. [Recon-ng](https://bitbucket.org/LaNMaSteR53/recon-ng) by Tim Tomes (LaNMaSteR53)
-7. [Amass](https://github.com/caffix/amass) by Jeff Foley (caffix)
+7. [Amass](https://github.com/OWASP/Amass) by Jeff Foley (caffix)
 8. [SubFinder](https://github.com/subfinder/subfinder) by by Ice3man543
 
 ###### Reporting + Wordlists:
