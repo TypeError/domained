@@ -32,7 +32,7 @@ domained uses several subdomain enumeration tools and wordlists to create a uniq
 8. [SubFinder](https://github.com/subfinder/subfinder) by by Ice3man543
 
 ###### Reporting + Wordlists:
-- [EyeWitness](https://github.com/ChrisTruncer/EyeWitness) by ChrisTruncer  
+- [EyeWitness](https://github.com/FortyNorthSecurity/EyeWitness) by ChrisTruncer  
 - [SecList](https://github.com/danielmiessler/SecLists) (DNS Recon List) by Daniel Miessler 
 - [LevelUp All.txt Subdomain List](https://gist.github.com/jhaddix/86a06c5dc309d08580a018c66354a056) by Jason Haddix 
 

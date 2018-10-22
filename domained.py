@@ -9,7 +9,7 @@
 #     - Amass by Jeff by Foley (https://github.com/OWASP/Amass)
 #     - SubFinder by Ice3man543 (https://github.com/subfinder/subfinder)
 #     - Recon-ng by Tim Tomes (LaNMaSteR53) (https://bitbucket.org/LaNMaSteR53/recon-ng)
-#     - EyeWitness by ChrisTruncer (https://github.com/ChrisTruncer/EyeWitness)
+#     - EyeWitness by ChrisTruncer (https://github.com/FortyNorthSecurity/EyeWitness)
 #     - SecList (DNS Recon List) by Daniel Miessler (https://github.com/danielmiessler/SecLists)
 #     - LevelUp All.txt Subdomain List by Jason Haddix
 
@@ -218,7 +218,7 @@ def upgradeFiles():
     subInstallReq = ("pip install -r bin/Sublist3r/requirements.txt")
     os.system(subInstallReq)
     print("Sublist3r Installed\n")
-    eyeWitnessUpgrade = ("git clone https://github.com/ChrisTruncer/EyeWitness.git ./bin/EyeWitness")
+    eyeWitnessUpgrade = ("git clone https://github.com/FortyNorthSecurity/EyeWitness.git ./bin/EyeWitness")
     print("\n\033[1;31mInstalling EyeWitness \033[1;37m" + eyeWitnessUpgrade)
     os.system(eyeWitnessUpgrade)
     eyeInstallReq = ("bash bin/EyeWitness/setup/setup.sh")
