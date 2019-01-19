@@ -144,7 +144,7 @@ def massdns():
     word_file = os.path.join(
         script_path, "bin/sublst/all.txt" if bruteall else "bin/sublst/sl-domains.txt"
     )
-    massdnsCMD = "python {} -s {} {} | {} -r resolvers.txt -t A -a -o -w {}-massdns.txt -".format(
+    massdnsCMD = "python {} {} {} | {} -r resolvers.txt -t A -a -o -w {}-massdns.txt".format(
         os.path.join(script_path, "bin/subbrute/subbrute.py"),
         word_file,
         domain,
@@ -532,24 +532,7 @@ def notified():
             print("\nError - Email Notification Not Sent\n")
 
 
-if __name__ == "__main__":
-    banner()
-    args = get_args()
-    domain = args.domain
-    output_base = "output/{}".format(domain)
-    script_path = os.path.dirname(os.path.realpath(__file__))
-    secure = args.secure
-    bruteforce = args.bruteforce
-    upgrade = args.upgrade
-    install = args.install
-    ports = args.ports
-    vpn = args.vpn
-    quick = args.quick
-    bruteall = args.bruteall
-    fresh = args.fresh
-    notify = args.notify
-    active = args.active
-    noeyewitness = args.noeyewitness
+def options():
     if vpn:
         vpncheck()
     if fresh:
@@ -583,3 +566,24 @@ if __name__ == "__main__":
         else:
             print("\nPlease provide a domain. Ex. -d example.com")
     print("\n\033[1;34mAll your subdomain are belong to us\033[1;37m")
+
+
+if __name__ == "__main__":
+    banner()
+    args = get_args()
+    domain = args.domain
+    output_base = "output/{}".format(domain)
+    script_path = os.path.dirname(os.path.realpath(__file__))
+    secure = args.secure
+    bruteforce = args.bruteforce
+    upgrade = args.upgrade
+    install = args.install
+    ports = args.ports
+    vpn = args.vpn
+    quick = args.quick
+    bruteall = args.bruteall
+    fresh = args.fresh
+    notify = args.notify
+    active = args.active
+    noeyewitness = args.noeyewitness
+    options()
