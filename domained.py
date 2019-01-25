@@ -412,7 +412,8 @@ def subdomainfile():
         os.remove(amassFileName)
         print("\n{} Subdomains discovered by Amass".format(subdomainCounter))
     except:
-        print("\nError Opening massdns File!\n")
+        print("\nError Opening  Amass File!\n")
+    print("\nOpening Subfinder File\n") 
     try:
         with open(subfinderFileName) as f:
             SubHosts = f.read().splitlines()
