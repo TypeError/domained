@@ -175,11 +175,10 @@ def knockpy():
             for row in reader:
                 knockpySubs.append(row[3])
         filenameKnocktxt = "{}.txt".format(knockpyFilenameInit)
-        f1 = open(filenameKnocktxt, "w")
-        for hosts in knockpySubs:
-            hosts = "".join(hosts)
-            f1.writelines("\n" + hosts)
-        f1.close()
+        with open(filenameKnocktxt, "w") as f1:
+            for hosts in knockpySubs:
+                hosts = "".join(hosts)
+                f1.writelines("\n" + hosts)
     except:
         print("\nKnock File Error\n")
     time.sleep(1)
@@ -313,107 +312,101 @@ def subdomainfile():
     massdnsFileName = "{}-massdns.txt".format(output_base)
     amassFileName = "{}_amass.txt".format(output_base)
     subfinderFileName = "{}_subfinder.txt".format(output_base)
-    f1 = open(subdomainAllFile, "w")
-    f1.close()
+
     print("\nOpening Sublist3r File\n")
     try:
         with open(sublist3rFileName) as f:
             SubHosts = f.read().splitlines()
-        f.close()
         time.sleep(2)
         subdomainCounter = 0
-        f1 = open(subdomainAllFile, "a")
-        f1.writelines("\n\nsublist3r")
-        for hosts in SubHosts:
-            hosts = "".join(hosts)
-            f1.writelines("\n" + hosts)
-            subdomainCounter = subdomainCounter + 1
-        f1.close()
+        with open(subdomainAllFile, "a") as f1:
+            f1.writelines("\n\nsublist3r")
+            for hosts in SubHosts:
+                hosts = "".join(hosts)
+                f1.writelines("\n" + hosts)
+                subdomainCounter = subdomainCounter + 1
         os.remove(sublist3rFileName)
         print("\n{} Subdomains discovered by Sublist3r".format(subdomainCounter))
     except:
         print("\nError Opening Sublist3r File!\n")
+
     print("\nOpening Enumall File\n")
     try:
         with open(enumallFileName) as f:
             SubHosts = f.read().splitlines()
-        f.close()
         time.sleep(2)
         subdomainCounter = 0
-        f1 = open(subdomainAllFile, "a")
-        f1.writelines("\n\nenumall")
-        for hosts in SubHosts:
-            hosts = "".join(hosts)
-            f1.writelines("\n" + hosts)
-            subdomainCounter = subdomainCounter + 1
-        f1.close()
+        with open(subdomainAllFile, "a") as f1:
+            f1.writelines("\n\nenumall")
+            for hosts in SubHosts:
+                hosts = "".join(hosts)
+                f1.writelines("\n" + hosts)
+                subdomainCounter = subdomainCounter + 1
         os.remove(enumallFileName)
         enumallFileNamecsv = domain + ".csv"
         os.remove(enumallFileNamecsv)
         print("\n{} Subdomains discovered by Enumall".format(subdomainCounter))
     except:
         print("\nError Opening Enumall File!\n")
+
     print("\nOpening Knock File\n")
     try:
         with open(knockpyFileName) as f:
             SubHosts = f.read().splitlines()
-        f.close()
         time.sleep(1)
         subdomainCounter = 0
-        f1 = open(subdomainAllFile, "a")
-        f1.writelines("\n\nknock")
-        for hosts in SubHosts:
-            hosts = "".join(hosts)
-            f1.writelines("\n{}".format(hosts))
-            subdomainCounter = subdomainCounter + 1
-        f1.close()
+        with open(subdomainAllFile, "a") as f1:
+            f1.writelines("\n\nknock")
+            for hosts in SubHosts:
+                hosts = "".join(hosts)
+                f1.writelines("\n{}".format(hosts))
+                subdomainCounter = subdomainCounter + 1
         knockpyFileNamecsv = "{}_knock.csv".format(output_base)
         os.remove(knockpyFileName)
         os.remove(knockpyFileNamecsv)
         print("\n{} Subdomains discovered by Knock".format(subdomainCounter))
     except:
         print("\nError Opening Knock File!\n")
+
     print("\nOpening massdns File\n")
     try:
         with open(massdnsFileName) as f:
             SubHosts = f.read().splitlines()
-        f.close()
         time.sleep(1)
         subdomainCounter = 0
-        f1 = open(subdomainAllFile, "a")
-        f1.writelines("\n\nmassdns")
-        for hosts in SubHosts:
-            hosts = hosts.split(".	")[0]
-            if domain in hosts:
-                hosts = "".join(hosts)
-                f1.writelines("\n" + hosts)
-                subdomainCounter = subdomainCounter + 1
-        f1.close()
+        with open(subdomainAllFile, "a") as f1:
+            f1.writelines("\n\nmassdns")
+            for hosts in SubHosts:
+                hosts = hosts.split(".	")[0]
+                if domain in hosts:
+                    hosts = "".join(hosts)
+                    f1.writelines("\n" + hosts)
+                    subdomainCounter = subdomainCounter + 1
         os.remove(massdnsFileName)
         print("\n{} Subdomains discovered by massdns".format(subdomainCounter))
     except:
         print("\nError Opening massdns File!\n")
+
     print("\nOpening Amass File\n")
     try:
         with open(amassFileName) as f:
             SubHosts = f.read().splitlines()
-        f.close()
         time.sleep(1)
         subdomainCounter = 0
-        f1 = open(subdomainAllFile, "a")
-        f1.writelines("\n\namass")
-        for hosts in SubHosts:
-            hosts = hosts.split(".	")[0]
-            if domain in hosts:
-                hosts = "".join(hosts)
-                f1.writelines("\n" + hosts)
-                subdomainCounter = subdomainCounter + 1
-        f1.close()
+        with open(subdomainAllFile, "a") as f1:
+            f1.writelines("\n\namass")
+            for hosts in SubHosts:
+                hosts = hosts.split(".	")[0]
+                if domain in hosts:
+                    hosts = "".join(hosts)
+                    f1.writelines("\n" + hosts)
+                    subdomainCounter = subdomainCounter + 1
         os.remove(amassFileName)
         print("\n{} Subdomains discovered by Amass".format(subdomainCounter))
     except:
         print("\nError Opening  Amass File!\n")
-    print("\nOpening Subfinder File\n") 
+
+    print("\nOpening Subfinder File\n")
     try:
         with open(subfinderFileName) as f:
             SubHosts = f.read().splitlines()
@@ -431,23 +424,23 @@ def subdomainfile():
         print("\n{} Subdomains discovered by Subfinder".format(subdomainCounter))
     except:
         print("\nError Opening Subfinder File!\n")
+
     print("\nCombining Domains Lists\n")
-    domainList = open(subdomainAllFile, "r")
-    uniqueDomains = set(domainList)
-    domainList.close()
+    with open(subdomainAllFile, "r") as domainList:
+        uniqueDomains = set(domainList)
+
     subdomainUniqueFile = "{}-unique.txt".format(output_base)
-    uniqueDomainsOut = open(subdomainUniqueFile, "w")
-    for domains in uniqueDomains:
-        domains = domains.replace("\n", "")
-        if domains.endswith(domain):
-            uniqueDomainsOut.writelines("https://{}\n".format(domains))
-            if ports is not False:
-                uniqueDomainsOut.writelines("https://{}:8443\n".format(domains))
-            if secure is False:
-                uniqueDomainsOut.writelines("http://{}\n".format(domains))
+    with open(subdomainUniqueFile, "w") as uniqueDomainsOut:
+        for domains in uniqueDomains:
+            domains = domains.replace("\n", "")
+            if domains.endswith(domain):
+                uniqueDomainsOut.writelines("https://{}\n".format(domains))
                 if ports is not False:
-                    uniqueDomainsOut.writelines("http://{}:8080\n".format(domains))
-    uniqueDomainsOut.close()
+                    uniqueDomainsOut.writelines("https://{}:8443\n".format(domains))
+                if secure is False:
+                    uniqueDomainsOut.writelines("http://{}\n".format(domains))
+                    if ports is not False:
+                        uniqueDomainsOut.writelines("http://{}:8080\n".format(domains))
     time.sleep(1)
     rootdomainStrip = domain.replace(".", "_")
     print("\nCleaning Up Old Files\n")
