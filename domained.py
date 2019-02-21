@@ -272,7 +272,7 @@ def upgradeFiles():
     print("\n\033[1;31mCopying JHaddix All Domain List: \033[1;37m")
     print("\nJHaddix All Domain List Installed\n")
     os.system(sublstUpgrade)
-    SLsublstUpgrade = "wget -O ./bin/sublst/sl-domains.txt https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/DNS/sortedcombied-knock-dnsrecon-fierce-reconng.txt"
+    SLsublstUpgrade = "wget -O ./bin/sublst/sl-domains.txt https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/DNS/sortedcombined-knock-dnsrecon-fierce-reconng.txt"
     print("\n\033[1;31mCopying SecList Domain List \033[1;37m")
     print("\nSecList Domain List Installed\n")
     os.system(SLsublstUpgrade)
