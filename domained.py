@@ -304,21 +304,28 @@ def upgradeFiles():
     print("Changing back to old working directory: {}".format(old_wd))
     os.chdir(old_wd)
 
+
 def writeFiles(name):
     """Writes info of all hosts from subhosts
     """
     subdomainCounter = 0
     subdomainAllFile = "{}-all.txt".format(output_base)
-    fileExt = {'Sublist3r':'.txt', 'knock':'.csv.txt', 'enumall': '.lst',
-               'massdns': '.txt', 'amass': '.txt', 'SubFinder': '.txt'}
-    fileName = "output/" + name + fileExt[name]
+    fileExt = {
+        "sublist3r": ".txt",
+        "knock": ".csv.txt",
+        "enumall": ".lst",
+        "massdns": ".txt",
+        "amass": ".txt",
+        "subfinder": ".txt",
+    }
+    fileName = output_base + "_" + name + fileExt[name]
 
     print("\n Opening %s File" % name)
     try:
-        with open(fileName, 'w') as f:
+        with open(fileName, "r") as f:
             SubHosts = f.read().splitlines()
 
-        with open(subdomainAllFile, 'a') as f:
+        with open(subdomainAllFile, "a") as f:
             f.writelines("\n\n" + name)
             for hosts in SubHosts:
                 hosts = "".join(hosts)
@@ -333,7 +340,7 @@ def writeFiles(name):
 
 def subdomainfile():
     subdomainAllFile = "{}-all.txt".format(output_base)
-    names = ['Sublist3r', 'knock', 'enumall', 'massdns', 'amass', 'SubFinder']
+    names = ["sublist3r", "knock", "enumall", "massdns", "amass", "subfinder"]
 
     for name in names:
         writeFiles(name)
