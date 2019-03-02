@@ -144,7 +144,7 @@ def massdns():
     word_file = os.path.join(
         script_path, "bin/sublst/all.txt" if bruteall else "bin/sublst/sl-domains.txt"
     )
-    massdnsCMD = "python {} {} {} | {} -r resolvers.txt -t A -a -o -w {}-massdns.txt".format(
+    massdnsCMD = "python {} {} {} | {} -r resolvers.txt -t A -o S -w {}-massdns.txt".format(
         os.path.join(script_path, "bin/subbrute/subbrute.py"),
         word_file,
         domain,
