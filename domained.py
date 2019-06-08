@@ -23,9 +23,9 @@ import glob
 import os
 import requests
 import smtplib
-import subprocess
 import time
 from signal import signal, alarm, SIGALRM
+from installer import upgradeFiles
 
 today = datetime.date.today()
 
@@ -226,84 +226,6 @@ def eyewitness(filename):
     print("\a")
 
 
-def upgradeFiles():
-    binpath = os.path.join(script_path, "bin")
-    old_wd = os.getcwd()
-    if not os.path.exists(binpath):
-        os.makedirs(binpath)
-    else:
-        print("Removing old bin directory: {}".format(binpath))
-        os.system("rm -rf {}".format(binpath))
-        os.makedirs(binpath)
-    print("Changing into domained home: {}".format(script_path))
-    os.chdir(script_path)
-    unameChk = str(subprocess.check_output(["uname", "-am"]))
-    if "kali" not in unameChk:
-        print("\n\033[1;31mKali Linux Recommended!\033[1;37m")
-        time.sleep(1)
-    sublist3rUpgrade = (
-        "git clone https://github.com/aboul3la/Sublist3r.git ./bin/Sublist3r"
-    )
-    print("\n\033[1;31mInstalling Sublist3r \033[1;37m")
-    os.system(sublist3rUpgrade)
-    subInstallReq = "pip install -r bin/Sublist3r/requirements.txt"
-    os.system(subInstallReq)
-    print("Sublist3r Installed\n")
-    eyeWitnessUpgrade = "git clone https://github.com/FortyNorthSecurity/EyeWitness.git ./bin/EyeWitness"
-    print("\n\033[1;31mInstalling EyeWitness \033[1;37m" + eyeWitnessUpgrade)
-    os.system(eyeWitnessUpgrade)
-    eyeInstallReq = "bash bin/EyeWitness/setup/setup.sh"
-    print("\n\033[1;31mRunning Command: \033[1;37m")
-    os.system(eyeInstallReq)
-    cpphantomjs = "cp phantomjs ./bin/EyeWitness/bin/"
-    os.system(cpphantomjs)
-    movephantomjs = "mv phantomjs bin/"
-    os.system(movephantomjs)
-    print("\nEyeWitness Installed\n")
-    enumallUpgrade = "git clone https://github.com/jhaddix/domain.git ./bin/domain"
-    print("\n\033[1;31mInstalling Enumall \033[1;37m")
-    print("\nenumall Installed\n")
-    os.system(enumallUpgrade)
-    knockpyUpgrade = "git clone https://github.com/guelfoweb/knock.git ./bin/knockpy"
-    print("\n\033[1;31mInstalling Knock \033[1;37m")
-    os.system(knockpyUpgrade)
-    print("\nKnockpy Installed\n")
-    sublstUpgrade = "git clone https://gist.github.com/jhaddix/86a06c5dc309d08580a018c66354a056 ./bin/sublst"
-    print("\n\033[1;31mCopying JHaddix All Domain List: \033[1;37m")
-    print("\nJHaddix All Domain List Installed\n")
-    os.system(sublstUpgrade)
-    SLsublstUpgrade = "wget -O ./bin/sublst/sl-domains.txt https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/DNS/sortedcombined-knock-dnsrecon-fierce-reconng.txt"
-    print("\n\033[1;31mCopying SecList Domain List \033[1;37m")
-    print("\nSecList Domain List Installed\n")
-    os.system(SLsublstUpgrade)
-    subbruteUpgrade = "git clone https://github.com/TheRook/subbrute.git ./bin/subbrute"
-    print("\n\033[1;31mInstalling Subbrute \033[1;37m")
-    os.system(subbruteUpgrade)
-    print("\nSubbrute Installed\n")
-    amassUpgrade = "go get -u github.com/OWASP/Amass/..."
-    print("\n\033[1;31mInstalling Amass \033[1;37m")
-    os.system(amassUpgrade)
-    subfinderUpgrade = "go get -u github.com/subfinder/subfinder"
-    print("\n\033[1;31mInstalling Subfinder \033[1;37m")
-    os.system(subfinderUpgrade)
-    massdnsUpgrade = "git clone --branch v0.2 --single-branch https://github.com/blechschmidt/massdns ./bin/massdns"
-    print("\n\033[1;31mInstalling massdns \033[1;37m")
-    os.system(massdnsUpgrade)
-    massdnsMake = "make -C ./bin/massdns"
-    os.system(massdnsMake)
-    print("\nMassdns Installed\n")
-    os.system("cp ./bin/subbrute/resolvers.txt ./")
-    if "kali" in unameChk:
-        reconNGInstall = "apt-get install recon-ng"
-        print("\n\033[1;31mInstalling Recon-ng \033[1;37m")
-        os.system(reconNGInstall)
-        print("\nRecon-ng Installed\n")
-    else:
-        print("Please install Recon-ng - https://bitbucket.org/LaNMaSteR53/")
-    print("\n\033[1;31mAll tools installed \033[1;37m")
-    print("Changing back to old working directory: {}".format(old_wd))
-    os.chdir(old_wd)
-
 
 def writeFiles(name):
     """Writes info of all hosts from subhosts
@@ -329,10 +251,10 @@ def writeFiles(name):
             f.writelines("\n\n" + name)
             for hosts in SubHosts:
                 hosts = "".join(hosts)
-                f.writelines("\n" + hosts)
-                subdomainCounter += 1
-        os.remove(fileName)
-        print("\n%s Subdomains discovered by %s" % (subdomainCounter, name))
+                f1.writelines("\n" + hosts)
+                subdomainCounter = subdomainCounter + 1
+        os.remove(massdnsFileName)
+        print("\n{} Subdomains discovered by massdns".format(subdomainCounter))
     except:
         print("\nError Opening %s File!\n" % name)
     return subdomainCounter
@@ -453,9 +375,7 @@ def options():
         os.system("rm -r output")
         newpath = r"output"
         os.makedirs(newpath)
-    if install:
-        upgradeFiles()
-    elif upgrade:
+    if install or upgrade:
         upgradeFiles()
     else:
         if domain:
