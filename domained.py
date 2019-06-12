@@ -197,14 +197,19 @@ def check_gopath(cmd, install_repo):
             )
         )
     else:
-        print(
-            "\n\033[1;31m{} does not appear to be installed, please run `go get -u -v {}`\033[1;37m".format(
+        ans = input(
+            "\n\033[1;31m{} does not appear to be installed, would you like to run `go get -u -v {}`? [y/N]\033[1;37m".format(
                 cmd, install_repo
             )
         )
 
+        if ans.lower() == "y":
+            print("\n\033[1;31mInstalling {}\033[1;37m".format(install_repo))
+            os.system("go get -u -v {}".format(install_repo))
+            return True
 
-def amass():
+
+def amass(rerun=0):
     if which("amass"):
         print("\n\n\033[1;31mRunning Amass \n\033[1;37m")
         amassFileName = "{}_amass.txt".format(output_base)
@@ -215,10 +220,11 @@ def amass():
         time.sleep(1)
     else:
         print("\n\n\033[1;3mAmass is not currently in your $PATH \n\033[1;37m")
-        check_gopath("amass", "github.com/OWASP/Amass/...")
+        if check_gopath("amass", "github.com/OWASP/Amass/...") and rerun != 1:
+            amass(rerun=1)
 
 
-def subfinder():
+def subfinder(rerun=0):
     if which("subfinder"):
         print("\n\n\033[1;31mRunning Subfinder \n\033[1;37m")
         subfinderFileName = "{}_subfinder.txt".format(output_base)
@@ -229,7 +235,8 @@ def subfinder():
         time.sleep(1)
     else:
         print("\n\n\033[1;3mSubfinder is not currently in your $PATH \n\033[1;37m")
-        check_gopath("subfinder", "github.com/subfinder/subfinder")
+        if check_gopath("subfinder", "github.com/subfinder/subfinder") and rerun != 1:
+            subfinder(rerun=1)
 
 
 def eyewitness(filename):
