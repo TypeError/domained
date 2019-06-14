@@ -26,6 +26,8 @@ import smtplib
 import time
 from signal import signal, alarm, SIGALRM
 from installer import upgradeFiles
+from shutil import which
+
 
 today = datetime.date.today()
 
@@ -185,24 +187,56 @@ def knockpy():
     time.sleep(1)
 
 
-def amass():
-    print("\n\n\033[1;31mRunning Amass \n\033[1;37m")
-    amassFileName = "{}_amass.txt".format(output_base)
-    amassCmd = "~/go/bin/amass -d {} -o {}".format(domain, amassFileName)
-    print("\n\033[1;31mRunning Command: \033[1;37m{}".format(amassCmd))
-    os.system(amassCmd)
-    print("\n\033[1;31mAmass Complete\033[1;37m")
-    time.sleep(1)
+def check_gopath(cmd, install_repo):
+    if os.environ["GOPATH"]:
+        execs = os.listdir(os.path.join(os.environ["GOPATH"], "bin"))
+    if cmd in execs:
+        print(
+            "\n\033[1;31mFound '{}' in your $GOPATH/bin folder please add this to your $PATH\033[1;37m".format(
+                cmd
+            )
+        )
+    else:
+        ans = input(
+            "\n\033[1;31m{} does not appear to be installed, would you like to run `go get -u -v {}`? [y/N]\033[1;37m".format(
+                cmd, install_repo
+            )
+        )
+
+        if ans.lower() == "y":
+            print("\n\033[1;31mInstalling {}\033[1;37m".format(install_repo))
+            os.system("go get -u -v {}".format(install_repo))
+            return True
 
 
-def subfinder():
-    print("\n\n\033[1;31mRunning Subfinder \n\033[1;37m")
-    subfinderFileName = "{}_subfinder.txt".format(output_base)
-    subfinderCmd = "~/go/bin/subfinder -d {} -o {}".format(domain, subfinderFileName)
-    print("\n\033[1;31mRunning Command: \033[1;37m{}".format(subfinderCmd))
-    os.system(subfinderCmd)
-    print("\n\033[1;31msubfinder Complete\033[1;37m")
-    time.sleep(1)
+def amass(rerun=0):
+    if which("amass"):
+        print("\n\n\033[1;31mRunning Amass \n\033[1;37m")
+        amassFileName = "{}_amass.txt".format(output_base)
+        amassCmd = "amass -d {} -o {}".format(domain, amassFileName)
+        print("\n\033[1;31mRunning Command: \033[1;37m{}".format(amassCmd))
+        os.system(amassCmd)
+        print("\n\033[1;31mAmass Complete\033[1;37m")
+        time.sleep(1)
+    else:
+        print("\n\n\033[1;3mAmass is not currently in your $PATH \n\033[1;37m")
+        if check_gopath("amass", "github.com/OWASP/Amass/...") and rerun != 1:
+            amass(rerun=1)
+
+
+def subfinder(rerun=0):
+    if which("subfinder"):
+        print("\n\n\033[1;31mRunning Subfinder \n\033[1;37m")
+        subfinderFileName = "{}_subfinder.txt".format(output_base)
+        subfinderCmd = "subfinder -d {} -o {}".format(domain, subfinderFileName)
+        print("\n\033[1;31mRunning Command: \033[1;37m{}".format(subfinderCmd))
+        os.system(subfinderCmd)
+        print("\n\033[1;31msubfinder Complete\033[1;37m")
+        time.sleep(1)
+    else:
+        print("\n\n\033[1;3mSubfinder is not currently in your $PATH \n\033[1;37m")
+        if check_gopath("subfinder", "github.com/subfinder/subfinder") and rerun != 1:
+            subfinder(rerun=1)
 
 
 def eyewitness(filename):
@@ -224,7 +258,6 @@ def eyewitness(filename):
     print("\n\033[1;31mRunning Command: \033[1;37m{}".format(EWHTTPScriptIPS))
     os.system(EWHTTPScriptIPS)
     print("\a")
-
 
 
 def writeFiles(name):
