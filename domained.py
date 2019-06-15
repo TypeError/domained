@@ -64,7 +64,7 @@ def get_args():
         "--fresh", help="Remove output Folder", action="store_true", default=False
     )
     parser.add_argument(
-        "--notify", help="Notify when script completed", nargs="?", default=False
+        "--notify", help="Notify when script completed", action="store_true", default=False
     )
     parser.add_argument(
         "--active", help="EyeWitness Active Scan", action="store_true", default=False
@@ -213,7 +213,7 @@ def amass(rerun=0):
     if which("amass"):
         print("\n\n\033[1;31mRunning Amass \n\033[1;37m")
         amassFileName = "{}_amass.txt".format(output_base)
-        amassCmd = "amass -d {} -o {}".format(domain, amassFileName)
+        amassCmd = "amass enum -d {} -o {}".format(domain, amassFileName)
         print("\n\033[1;31mRunning Command: \033[1;37m{}".format(amassCmd))
         os.system(amassCmd)
         print("\n\033[1;31mAmass Complete\033[1;37m")
