@@ -284,10 +284,10 @@ def writeFiles(name):
             f.writelines("\n\n" + name)
             for hosts in SubHosts:
                 hosts = "".join(hosts)
-                f1.writelines("\n" + hosts)
+                f.writelines("\n" + hosts)
                 subdomainCounter = subdomainCounter + 1
-        os.remove(massdnsFileName)
-        print("\n{} Subdomains discovered by massdns".format(subdomainCounter))
+        os.remove(fileName)
+        print("\n{} Subdomains discovered by {}".format(subdomainCounter, name))
     except:
         print("\nError Opening %s File!\n" % name)
     return subdomainCounter
