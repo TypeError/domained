@@ -172,7 +172,7 @@ def knockpy():
     time.sleep(1)
     knockpySubs = []
     try:
-        with open(knockpyFilenameInit, "rb") as f:
+        with open(knockpyFilenameInit, "rt") as f:
             reader = csv.reader(f, delimiter=",")
             for row in reader:
                 knockpySubs.append(row[3])
