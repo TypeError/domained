@@ -8,7 +8,7 @@ A domain name enumeration tool
 domained uses several subdomain enumeration tools and wordlists to create a unique list of subdomains that are passed to EyeWitness for reporting with categorized screenshots, server response headers and signature based default credential checking. *(resources are saved to ./bin and output is saved to ./output)*
 
 ##### Initial Install: 
-* domained tools: `python domained.py --install`
+* domained tools: `python3 domained.py --install`
 * Python required modules: `sudo pip install -r ./ext/requirements.txt`
 ###### Other Dependencies: 
 * [ldns](https://www.nlnetlabs.nl/documentation/ldns/) library for DNS programming:
@@ -40,24 +40,24 @@ domained uses several subdomain enumeration tools and wordlists to create a uniq
 ````
 First Step:
 Install Required Python Modules: sudo pip install -r ./ext/requirements.txt
-Install Tools: sudo python domained.py --install
+Install Tools: sudo python3 domained.py --install
 
-Example 1: python domained.py -d example.com
+Example 1: python3 domained.py -d example.com
 Uses subdomain example.com (Sublist3r (+subbrute), enumall, Knock, Amass, and SubFinder)
 
-Example 2: python domained.py -d example.com -b -p --vpn
+Example 2: python3 domained.py -d example.com -b -p --vpn
 Uses subdomain example.com with seclist subdomain list bruteforcing (massdns, subbrute, Sublist3r, Amass, enumall, and SubFinder), adds ports 8443/8080 and checks if on VPN
 
-Example 3: python domained.py -d example.com -b --bruteall
+Example 3: python3 domained.py -d example.com -b --bruteall
 Uses subdomain example.com with large-all.txt bruteforcing (massdns, subbrute, Sublist3r, Amass, enumall and SubFinder)
 
-Example 4: python domained.py -d example.com --quick
+Example 4: python3 domained.py -d example.com --quick
 Uses subdomain example.com and only Amass and SubFinder
 
-Example 5: python domained.py -d example.com --quick --notify
+Example 5: python3 domained.py -d example.com --quick --notify
 Uses subdomain example.com, only Amass and SubFinder and notification
 
-Example 6: python domained.py -d example.com --noeyewitness
+Example 6: python3 domained.py -d example.com --noeyewitness
 Uses subdomain example.com with no EyeWitness
 
 Note: --bruteall must be used with the -b flag
