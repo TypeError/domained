@@ -17,6 +17,7 @@
 
 import argparse
 import configparser
+import colorama
 import csv
 import datetime
 import glob
@@ -26,9 +27,10 @@ import smtplib
 import time
 from signal import signal, alarm, SIGALRM
 from installer import upgradeFiles
+from color import error, info, debug, warning
 from shutil import which
 
-
+colorama.init()
 today = datetime.date.today()
 
 
@@ -64,7 +66,10 @@ def get_args():
         "--fresh", help="Remove output Folder", action="store_true", default=False
     )
     parser.add_argument(
-        "--notify", help="Notify when script completed", action="store_true", default=False
+        "--notify",
+        help="Notify when script completed",
+        action="store_true",
+        default=False,
     )
     parser.add_argument(
         "--active", help="EyeWitness Active Scan", action="store_true", default=False
@@ -82,21 +87,23 @@ if not os.path.exists(newpath):
 
 
 def banner():
-    print(
-        """\033[1;31m
+    warning(
+        """
          ___/ /__  __ _  ___ _(_)__  ___ ___/ /
         / _  / _ \/  ' \/ _ `/ / _ \/ -_) _  /
         \_,_/\___/_/_/_/\_,_/_/_//_/\__/\_,_/
-    \033[1;34m\t\t\tgithub.com/cakinney\033[1;m"""
+    {}\t\t\tgithub.com/cakinney{}""".format(
+            colorama.Fore.BLUE, colorama.Style.RESET_ALL
+        )
     )
     globpath = "*.csv"
     globpath2 = "*.lst"
     if (next(glob.iglob(globpath), None)) or (next(glob.iglob(globpath2), None)):
-        print("\nThe following files may be left over from failed domained attempts:")
+        info("\nThe following files may be left over from failed domained attempts:")
         for file in glob.glob(globpath):
-            print("  - {}".format(file))
+            info("  - {}".format(file))
         for file in glob.glob(globpath2):
-            print("  - {}".format(file))
+            info("  - {}".format(file))
         signal(SIGALRM, lambda x: 1 / 0)
         try:
             alarm(5)
@@ -104,17 +111,17 @@ def banner():
             if RemoveQ.lower() == "y":
                 os.system("rm *.csv")
                 os.system("rm *.lst")
-                print("\nFiles removed\nStarting domained...")
+                info("\nFiles removed\nStarting domained...")
                 time.sleep(5)
             else:
-                print("\nThank you.\nPlease wait...")
+                info("\nThank you.\nPlease wait...")
                 time.sleep(1)
         except:
-            print("\n\nStarting domained...")
+            info("\n\nStarting domained...")
 
 
 def sublist3r(brute=False):
-    print("\n\n\033[1;31mRunning Sublist3r \n\033[1;37m")
+    info("\n\nRunning Sublist3r \n")
     sublist3rFileName = "{}_sublist3r.txt".format(output_base)
     Subcmd = "python {} -v -t 15 {} -d {} -o {}".format(
         os.path.join(script_path, "bin/Sublist3r/sublist3r.py"),
@@ -122,27 +129,27 @@ def sublist3r(brute=False):
         domain,
         sublist3rFileName,
     )
-    print("\n\033[1;31mRunning Command: \033[1;37m{}".format(Subcmd))
+    debug("\nRunning Command: {}".format(Subcmd))
     os.system(Subcmd)
-    print("\n\033[1;31mSublist3r Complete\033[1;37m")
+    info("\nSublist3r Complete")
     time.sleep(1)
     if brute:
         eyewitness(sublist3rFileName)
 
 
 def enumall():
-    print("\n\n\033[1;31mRunning Enumall \n\033[1;37m")
+    info("\n\nRunning Enumall \n")
     enumallCMD = "python {} {}".format(
         os.path.join(script_path, "bin/domain/enumall.py"), domain
     )
-    print("\n\033[1;31mRunning Command: \033[1;37m{}".format(enumallCMD))
+    debug("\nRunning Command: {}".format(enumallCMD))
     os.system(enumallCMD)
-    print("\n\033[1;31menumall Complete\033[1;37m")
+    info("\nenumall Complete")
     time.sleep(1)
 
 
 def massdns():
-    print("\n\n\033[1;31mRunning massdns \n\033[1;37m")
+    info("\n\nRunning massdns \n")
     word_file = os.path.join(
         script_path, "bin/sublst/all.txt" if bruteall else "bin/sublst/sl-domains.txt"
     )
@@ -153,18 +160,18 @@ def massdns():
         os.path.join(script_path, "bin/massdns/bin/massdns"),
         output_base,
     )
-    print("\n\033[1;31mRunning Command: \033[1;37m{}".format(massdnsCMD))
+    debug("\nRunning Command: {}".format(massdnsCMD))
     os.system(massdnsCMD)
-    print("\n\033[1;31mMasscan Complete\033[1;37m")
+    info("\nMasscan Complete")
     time.sleep(1)
 
 
 def knockpy():
-    print("\n\n\033[1;31mRunning Knock \n\033[1;37m")
+    info("\n\nRunning Knock \n")
     knockpyCmd = "python {} -c {}".format(
         os.path.join(script_path, "bin/knockpy/knockpy/knockpy.py"), domain
     )
-    print("\n\033[1;31mRunning Command: \033[1;37m {}".format(knockpyCmd))
+    debug("\nRunning Command:  {}".format(knockpyCmd))
     os.system(knockpyCmd)
     rootdomainStrip = domain.replace(".", "_")
     knockpyFilenameInit = "{}_knock.csv".format(output_base)
@@ -183,7 +190,7 @@ def knockpy():
             f1.writelines("\n" + hosts)
         f1.close()
     except:
-        print("\nKnock File Error\n")
+        error("\nKnock File Error\n")
     time.sleep(1)
 
 
@@ -191,56 +198,56 @@ def check_gopath(cmd, install_repo):
     if os.environ["GOPATH"]:
         execs = os.listdir(os.path.join(os.environ["GOPATH"], "bin"))
     if cmd in execs:
-        print(
-            "\n\033[1;31mFound '{}' in your $GOPATH/bin folder please add this to your $PATH\033[1;37m".format(
+        warning(
+            "\nFound '{}' in your $GOPATH/bin folder please add this to your $PATH".format(
                 cmd
             )
         )
     else:
         ans = input(
-            "\n\033[1;31m{} does not appear to be installed, would you like to run `go get -u -v {}`? [y/N]\033[1;37m".format(
-                cmd, install_repo
+            "\n{}{} does not appear to be installed, would you like to run `go get -u -v {}`? [y/N]{}".format(
+                colorama.Fore.RED, cmd, install_repo, colorama.Style.RESET_ALL
             )
         )
 
         if ans.lower() == "y":
-            print("\n\033[1;31mInstalling {}\033[1;37m".format(install_repo))
+            info("\nInstalling {}".format(install_repo))
             os.system("go get -u -v {}".format(install_repo))
             return True
 
 
 def amass(rerun=0):
     if which("amass"):
-        print("\n\n\033[1;31mRunning Amass \n\033[1;37m")
+        info("\n\nRunning Amass \n")
         amassFileName = "{}_amass.txt".format(output_base)
         amassCmd = "amass enum -d {} -o {}".format(domain, amassFileName)
-        print("\n\033[1;31mRunning Command: \033[1;37m{}".format(amassCmd))
+        debug("\nRunning Command: {}".format(amassCmd))
         os.system(amassCmd)
-        print("\n\033[1;31mAmass Complete\033[1;37m")
+        info("\nAmass Complete")
         time.sleep(1)
     else:
-        print("\n\n\033[1;3mAmass is not currently in your $PATH \n\033[1;37m")
+        warning("\n\nmass is not currently in your $PATH \n")
         if check_gopath("amass", "github.com/OWASP/Amass/...") and rerun != 1:
             amass(rerun=1)
 
 
 def subfinder(rerun=0):
     if which("subfinder"):
-        print("\n\n\033[1;31mRunning Subfinder \n\033[1;37m")
+        info("\n\nRunning Subfinder \n")
         subfinderFileName = "{}_subfinder.txt".format(output_base)
         subfinderCmd = "subfinder -d {} -o {}".format(domain, subfinderFileName)
-        print("\n\033[1;31mRunning Command: \033[1;37m{}".format(subfinderCmd))
+        debug("\nRunning Command: {}".format(subfinderCmd))
         os.system(subfinderCmd)
-        print("\n\033[1;31msubfinder Complete\033[1;37m")
+        info("\nsubfinder Complete")
         time.sleep(1)
     else:
-        print("\n\n\033[1;3mSubfinder is not currently in your $PATH \n\033[1;37m")
+        warning("\n\nubfinder is not currently in your $PATH \n")
         if check_gopath("subfinder", "github.com/subfinder/subfinder") and rerun != 1:
             subfinder(rerun=1)
 
 
 def eyewitness(filename):
-    print("\n\n\033[1;31mRunning EyeWitness  \n\033[1;37m")
+    info("\n\nRunning EyeWitness  \n")
     EWHTTPScriptIPS = "python {} -f {} {} --no-prompt --web  -d {}-{}-EW".format(
         os.path.join(script_path, "bin/EyeWitness/EyeWitness.py"),
         filename,
@@ -249,13 +256,13 @@ def eyewitness(filename):
         time.strftime("%m-%d-%y-%H-%M"),
     )
     if vpn:
-        print(
-            "\n\033[1;31mIf not connected to VPN manually run the following command on reconnect:\n\033[1;37m{}".format(
+        info(
+            "\nIf not connected to VPN manually run the following command on reconnect:\n{}".format(
                 EWHTTPScriptIPS
             )
         )
         vpncheck()
-    print("\n\033[1;31mRunning Command: \033[1;37m{}".format(EWHTTPScriptIPS))
+    debug("\nRunning Command: {}".format(EWHTTPScriptIPS))
     os.system(EWHTTPScriptIPS)
     print("\a")
 
@@ -275,7 +282,7 @@ def writeFiles(name):
     }
     fileName = output_base + "_" + name + fileExt[name]
 
-    print("\n Opening %s File" % name)
+    debug("\n Opening %s File" % name)
     try:
         with open(fileName, "r") as f:
             SubHosts = f.read().splitlines()
@@ -287,9 +294,9 @@ def writeFiles(name):
                 f.writelines("\n" + hosts)
                 subdomainCounter = subdomainCounter + 1
         os.remove(fileName)
-        print("\n{} Subdomains discovered by {}".format(subdomainCounter, name))
+        info("\n{} Subdomains discovered by {}".format(subdomainCounter, name))
     except:
-        print("\nError Opening %s File!\n" % name)
+        error("\nError Opening %s File!\n" % name)
     return subdomainCounter
 
 
@@ -300,7 +307,7 @@ def subdomainfile():
     for name in names:
         writeFiles(name)
 
-    print("\nCombining Domains Lists\n")
+    debug("\nCombining Domains Lists\n")
     with open(subdomainAllFile, "r") as domainList:
         uniqueDomains = set(domainList)
         domainList.close()
@@ -318,12 +325,12 @@ def subdomainfile():
                         uniqueDomainsOut.writelines("http://{}:8080\n".format(domains))
     time.sleep(1)
     rootdomainStrip = domain.replace(".", "_")
-    print("\nCleaning Up Old Files\n")
+    info("\nCleaning Up Old Files\n")
     try:
         os.system("rm {}*".format(domain))
         os.system("rm {}*".format(rootdomainStrip))
     except:
-        print("\nError Removing Files!\n")
+        error("\nError Removing Files!\n")
     if not noeyewitness:
         eyewitness(subdomainUniqueFile)
 
@@ -332,13 +339,13 @@ def vpncheck():
     vpnck = requests.get("https://ifconfig.co/json")
     # Change "City" to your city")
     if "City" in vpnck.text:
-        print("\n\033[1;31mNot connected via VPN \033[1;37m")
-        print("\n{}".format(vpnck.content))
-        print("\n\033[1;31mQuitting domained... \033[1;37m")
+        warning("\nNot connected via VPN ")
+        warning("\n{}".format(vpnck.content))
+        warning("\nQuitting domained... ")
         quit()
     else:
-        print("\n\033[1;31mConnected via VPN \033[1;37m")
-        print("\n{}".format(vpnck.content))
+        info("\nConnected via VPN ")
+        info("\n{}".format(vpnck.content))
         time.sleep(5)
 
 
@@ -373,17 +380,17 @@ def notified():
             )
             poJsonV = poValidate.json()
             if poJsonV["status"] == 1:
-                print("\nPushover Account Validated\n")
+                info("\nPushover Account Validated\n")
                 poRequest = requests.post(
                     "https://api.pushover.net/1/messages.json", data=(poRequestPayload)
                 )
                 poJsonR = poRequest.json()
                 if poJsonV["status"] == 1:
-                    print("\nPushover Account Notified\n")
+                    info("\nPushover Account Notified\n")
                 else:
-                    print("\nError - Pushover Account Not Notified\n")
+                    error("\nError - Pushover Account Not Notified\n")
             else:
-                print("\nError - Pushover Account Not Validated\n")
+                error("\nError - Pushover Account Not Validated\n")
     if (Config.get("Email", "enable")) == "True":
         gmailUser = Config.get("Email", "user")
         gmailPass = Config.get("Email", "password")
@@ -396,9 +403,9 @@ def notified():
             msg = "Subject: {}\n\n{}".format(subject, text)
             server.sendmail(gmailUser, gmailUser, msg)
             server.quit()
-            print("\nEmail Notification Sent\n")
+            info("\nEmail Notification Sent\n")
         except:
-            print("\nError - Email Notification Not Sent\n")
+            error("\nError - Email Notification Not Sent\n")
 
 
 def options():
@@ -431,8 +438,8 @@ def options():
             if notify:
                 notified()
         else:
-            print("\nPlease provide a domain. Ex. -d example.com")
-    print("\n\033[1;34mAll your subdomain are belong to us\033[1;37m")
+            warning("\nPlease provide a domain. Ex. -d example.com")
+    colored("\nAll your subdomain are belong to us", colorama.Fore.BLUE)
 
 
 if __name__ == "__main__":
