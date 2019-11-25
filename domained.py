@@ -27,7 +27,7 @@ import smtplib
 import time
 from signal import signal, alarm, SIGALRM
 from installer import upgradeFiles
-from color import error, info, debug, warning
+from color import error, info, debug, warning, colored
 from shutil import which
 
 colorama.init()
