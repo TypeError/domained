@@ -71,10 +71,10 @@ def upgradeFiles():
     os.system(subbruteUpgrade)
     info("\nSubbrute Installed\n")
 
-    amassUpgrade = "go get -u -v github.com/OWASP/Amass/..."
+    amassUpgrade = "go get -v -u github.com/OWASP/Amass/v3/..."
     info("\nInstalling Amass ")
     os.system(amassUpgrade)
-    subfinderUpgrade = "go get -u -v github.com/subfinder/subfinder"
+    subfinderUpgrade = "go get -u -v github.com/projectdiscovery/subfinder/cmd/subfinder"
     info("\nInstalling Subfinder ")
     os.system(subfinderUpgrade)
     massdnsUpgrade = "git clone --branch v0.2 --single-branch https://github.com/blechschmidt/massdns ./bin/massdns"
