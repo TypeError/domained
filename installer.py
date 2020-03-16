@@ -23,7 +23,13 @@ def upgradeFiles():
 
     if "kali" not in unameChk:
         warning("\nKali Linux Recommended!")
-        time.sleep(1)
+        warning("Please install ldns (https://www.nlnetlabs.nl/documentation/ldns, 'apt install libldns-dev') and Go (https://golang.org, 'apt install golang')")
+        time.sleep(3)
+    else:
+        dependenciesInstall = "apt install libldns-dev golang"
+        info("\nInstalling dependencies (ldns, Go) ")
+        os.system(dependenciesInstall)
+        info("\nDependencies Installed\n")
 
     sublist3rUpgrade = (
         "git clone https://github.com/aboul3la/Sublist3r.git ./bin/Sublist3r"
@@ -40,10 +46,6 @@ def upgradeFiles():
     eyeInstallReq = "bash bin/EyeWitness/setup/setup.sh"
     debug("\nRunning Command: ")
     os.system(eyeInstallReq)
-    cpphantomjs = "cp phantomjs ./bin/EyeWitness/bin/"
-    os.system(cpphantomjs)
-    movephantomjs = "mv phantomjs bin/"
-    os.system(movephantomjs)
     info("\nEyeWitness Installed\n")
 
     enumallUpgrade = "git clone https://github.com/jhaddix/domain.git ./bin/domain"
@@ -60,8 +62,7 @@ def upgradeFiles():
     info("\nCopying JHaddix All Domain List: ")
     info("\nJHaddix All Domain List Installed\n")
     os.system(sublstUpgrade)
-    SLsublstUpgrade = "wget -O ./bin/sublst/sl-domains.txt https://raw.githubusercontent.com/\
-    danielmiessler/SecLists/master/Discovery/DNS/sortedcombied-knock-dnsrecon-fierce-reconng.txt"
+    SLsublstUpgrade = "wget -O ./bin/sublst/sl-domains.txt https://github.com/danielmiessler/SecLists/raw/master/Discovery/DNS/sortedcombined-knock-dnsrecon-fierce-reconng.txt"
     info("\nCopying SecList Domain List ")
     info("\nSecList Domain List Installed\n")
     os.system(SLsublstUpgrade)
@@ -71,10 +72,10 @@ def upgradeFiles():
     os.system(subbruteUpgrade)
     info("\nSubbrute Installed\n")
 
-    amassUpgrade = "go get -v -u github.com/OWASP/Amass/v3/..."
+    amassUpgrade = "GO111MODULE=on go get -v -u github.com/OWASP/Amass/v3/..."
     info("\nInstalling Amass ")
     os.system(amassUpgrade)
-    subfinderUpgrade = "go get -u -v github.com/projectdiscovery/subfinder/cmd/subfinder"
+    subfinderUpgrade = "GO111MODULE=on go get -u -v github.com/projectdiscovery/subfinder/cmd/subfinder"
     info("\nInstalling Subfinder ")
     os.system(subfinderUpgrade)
     massdnsUpgrade = "git clone --branch v0.2 --single-branch https://github.com/blechschmidt/massdns ./bin/massdns"
