@@ -153,8 +153,8 @@ def massdns():
     word_file = os.path.join(
         script_path, "bin/sublst/all.txt" if bruteall else "bin/sublst/sl-domains.txt"
     )
-    massdnsCMD = "python {} {} {} | {} -r resolvers.txt -t A -o S -w {}-massdns.txt".format(
-        os.path.join(script_path, "bin/subbrute/subbrute.py"),
+    massdnsCMD = "python {} {} {} | {} -r resolvers.txt -t A -o S -w {}_massdns.txt".format(
+        os.path.join(script_path, "bin/massdns/scripts/subbrute.py"),
         word_file,
         domain,
         os.path.join(script_path, "bin/massdns/bin/massdns"),
@@ -248,10 +248,9 @@ def subfinder(rerun=0):
 
 def eyewitness(filename):
     info("\n\nRunning EyeWitness  \n")
-    EWHTTPScriptIPS = "python {} -f {} {} --no-prompt --web  -d {}-{}-EW".format(
-        os.path.join(script_path, "bin/EyeWitness/EyeWitness.py"),
+    EWHTTPScriptIPS = "python3 {} -f {} --no-prompt --web -d {}-{}-EW".format(
+        os.path.join(script_path, "bin/EyeWitness/Python/EyeWitness.py"),
         filename,
-        "--active-scan" if active else "",
         output_base,
         time.strftime("%m-%d-%y-%H-%M"),
     )
