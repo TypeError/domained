@@ -5,9 +5,10 @@ A domain name enumeration tool
 ---
 **This project is no longer maintained.**
 
-Thank you to [@ccsplit](https://github.com/ccsplit) and [@mzfr](https://github.com/mzfr) for your work on domained. 
+Thank you to [@ccsplit](https://github.com/ccsplit) and [@mzfr](https://github.com/mzfr) for their work on domained. 
 
 ---
+
 
 **Gist:** Some ~~terrible~~ continually updated python code leveraging some awesome tools that I use for bug bounty reconnaissance. 
 
