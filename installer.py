@@ -43,7 +43,7 @@ def upgradeFiles():
     eyeWitnessUpgrade = "git clone https://github.com/FortyNorthSecurity/EyeWitness.git ./bin/EyeWitness"
     info("\nInstalling EyeWitness" + eyeWitnessUpgrade)
     os.system(eyeWitnessUpgrade)
-    eyeInstallReq = "bash bin/EyeWitness/setup/setup.sh"
+    eyeInstallReq = "bash bin/EyeWitness/Python/setup/setup.sh"
     debug("\nRunning Command: ")
     os.system(eyeInstallReq)
     info("\nEyeWitness Installed\n")

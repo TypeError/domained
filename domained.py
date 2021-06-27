@@ -249,7 +249,7 @@ def subfinder(rerun=0):
 def eyewitness(filename):
     info("\n\nRunning EyeWitness  \n")
     EWHTTPScriptIPS = "python {} -f {} {} --no-prompt --web  -d {}-{}-EW".format(
-        os.path.join(script_path, "bin/EyeWitness/EyeWitness.py"),
+        os.path.join(script_path, "bin/EyeWitness/Python/EyeWitness.py"),
         filename,
         "--active-scan" if active else "",
         output_base,
